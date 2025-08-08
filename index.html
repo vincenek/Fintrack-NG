@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FinTrack NG | Personal Finance Tracker</title>
+    <title>FinTrack Pro | Premium Finance Tracker</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -17,10 +17,12 @@
             --warning: #f59e0b;
             --dark: #1e293b;
             --light: #f8fafc;
-            --card-bg: rgba(255, 255, 255, 0.95);
-            --card-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+            --card-bg: #ffffff;
+            --card-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
             --nigerian-green: #008751;
             --nigerian-white: #ffffff;
+            --border-radius: 12px;
+            --transition: all 0.3s ease;
         }
 
         * {
@@ -47,21 +49,22 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 15px 20px;
-            margin-bottom: 20px;
+            padding: 15px 25px;
+            margin-bottom: 25px;
             background: var(--nigerian-white);
-            border-radius: 16px;
+            border-radius: var(--border-radius);
             box-shadow: var(--card-shadow);
+            border: 1px solid rgba(226, 232, 240, 0.6);
         }
 
         .logo {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 15px;
         }
 
         .logo h1 {
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             background: linear-gradient(to right, var(--nigerian-green), var(--primary));
             -webkit-background-clip: text;
             background-clip: text;
@@ -70,8 +73,8 @@
         }
 
         .logo-icon {
-            width: 40px;
-            height: 40px;
+            width: 45px;
+            height: 45px;
             background: linear-gradient(135deg, var(--nigerian-green), var(--primary));
             border-radius: 10px;
             display: flex;
@@ -84,20 +87,20 @@
 
         .nav-buttons {
             display: flex;
-            gap: 10px;
+            gap: 12px;
         }
 
         .btn {
-            padding: 10px 15px;
-            border-radius: 10px;
+            padding: 10px 20px;
+            border-radius: 8px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: var(--transition);
             border: none;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 8px;
         }
 
         .btn-primary {
@@ -114,13 +117,19 @@
 
         .btn:hover {
             transform: translateY(-3px);
-            box-shadow: 0 7px 20px rgba(37, 99, 235, 0.2);
+            box-shadow: 0 7px 20px rgba(37, 99, 235, 0.15);
         }
 
         .main-content {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 20px;
+            gap: 25px;
+        }
+
+        @media (min-width: 992px) {
+            .main-content {
+                grid-template-columns: 1fr 350px;
+            }
         }
 
         .dashboard {
@@ -130,75 +139,85 @@
             margin-bottom: 20px;
         }
 
+        @media (min-width: 768px) {
+            .dashboard {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
         .card {
             background: var(--card-bg);
-            border-radius: 16px;
-            padding: 20px;
+            border-radius: var(--border-radius);
+            padding: 25px;
             box-shadow: var(--card-shadow);
-            transition: transform 0.3s ease;
-            border: 1px solid rgba(226, 232, 240, 0.5);
+            transition: var(--transition);
+            border: 1px solid rgba(226, 232, 240, 0.6);
         }
 
         .card:hover {
             transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.08);
         }
 
         .card-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
 
         .card-title {
-            font-size: 1.2rem;
+            font-size: 1.25rem;
             font-weight: 600;
             color: var(--dark);
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 12px;
         }
 
         .card-icon {
-            width: 35px;
-            height: 35px;
+            width: 40px;
+            height: 40px;
             background: linear-gradient(135deg, var(--nigerian-green), var(--primary));
-            border-radius: 8px;
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
+            font-size: 1.2rem;
         }
 
         .balance-amount {
-            font-size: 2rem;
+            font-size: 2.25rem;
             font-weight: 800;
-            margin: 10px 0;
+            margin: 15px 0;
             color: var(--dark);
         }
 
         .currency-symbol {
             color: var(--nigerian-green);
-            font-size: 1.5rem;
+            font-size: 1.6rem;
         }
 
         .balance-stats {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-top: 15px;
+            gap: 15px;
+            margin-top: 20px;
         }
 
         .stat {
             text-align: center;
-            padding: 10px;
+            padding: 15px;
             border-radius: 10px;
-            background: #f1f5f9;
+            background: #f8fafc;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.03);
         }
 
         .stat-value {
-            font-size: 1.1rem;
+            font-size: 1.25rem;
             font-weight: 700;
+            margin-bottom: 5px;
         }
 
         .income-value {
@@ -210,72 +229,82 @@
         }
 
         .stat-label {
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             opacity: 0.8;
         }
 
         .transaction-form {
             background: var(--card-bg);
-            border-radius: 16px;
-            padding: 20px;
+            border-radius: var(--border-radius);
+            padding: 25px;
             box-shadow: var(--card-shadow);
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
 
         .form-title {
-            font-size: 1.3rem;
-            margin-bottom: 15px;
+            font-size: 1.4rem;
+            margin-bottom: 20px;
             color: var(--dark);
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 12px;
         }
 
         .form-group {
-            margin-bottom: 15px;
+            margin-bottom: 18px;
         }
 
         .form-group label {
             display: block;
-            margin-bottom: 6px;
+            margin-bottom: 8px;
             font-weight: 500;
-            font-size: 0.95rem;
+            color: #475569;
         }
 
         .form-control {
             width: 100%;
-            padding: 10px 12px;
+            padding: 12px 15px;
             border-radius: 10px;
             border: 1px solid #cbd5e1;
-            font-size: 0.95rem;
-            transition: border-color 0.3s;
+            font-size: 1rem;
+            transition: var(--transition);
+            background: #f8fafc;
         }
 
         .form-control:focus {
             outline: none;
             border-color: var(--nigerian-green);
-            box-shadow: 0 0 0 3px rgba(0, 135, 81, 0.2);
+            box-shadow: 0 0 0 3px rgba(0, 135, 81, 0.15);
+            background: white;
         }
 
         .form-row {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+
+        @media (min-width: 576px) {
+            .form-row {
+                grid-template-columns: 1fr 1fr;
+            }
         }
 
         .btn-submit {
             background: linear-gradient(to right, var(--nigerian-green), #34d399);
             color: white;
             width: 100%;
-            padding: 12px;
-            font-size: 1rem;
+            padding: 14px;
+            font-size: 1.1rem;
             margin-top: 10px;
+            border-radius: 10px;
+            font-weight: 600;
         }
 
         .transaction-list {
             background: var(--card-bg);
-            border-radius: 16px;
-            padding: 20px;
+            border-radius: var(--border-radius);
+            padding: 25px;
             box-shadow: var(--card-shadow);
             max-height: 500px;
             overflow-y: auto;
@@ -285,22 +314,23 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
 
         .filters {
             display: flex;
-            gap: 8px;
+            gap: 10px;
         }
 
         .filter-btn {
-            padding: 6px 12px;
+            padding: 8px 15px;
             border-radius: 8px;
             background: #f1f5f9;
             border: none;
             cursor: pointer;
             font-weight: 500;
-            font-size: 0.85rem;
+            font-size: 0.9rem;
+            transition: var(--transition);
         }
 
         .filter-btn.active {
@@ -308,13 +338,17 @@
             color: white;
         }
 
+        .filter-btn:hover {
+            background: #e2e8f0;
+        }
+
         .transaction-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 12px;
+            padding: 15px;
             border-bottom: 1px solid #e2e8f0;
-            transition: background-color 0.3s;
+            transition: var(--transition);
         }
 
         .transaction-item:last-child {
@@ -323,24 +357,24 @@
 
         .transaction-item:hover {
             background-color: #f8fafc;
-            border-radius: 8px;
+            border-radius: 10px;
         }
 
         .transaction-info {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 15px;
         }
 
         .transaction-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 8px;
+            width: 45px;
+            height: 45px;
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
-            font-size: 1.1rem;
+            font-size: 1.2rem;
         }
 
         .category-income { background: var(--success); }
@@ -353,18 +387,18 @@
 
         .transaction-details h3 {
             font-weight: 600;
-            margin-bottom: 3px;
-            font-size: 1rem;
+            margin-bottom: 5px;
+            font-size: 1.05rem;
         }
 
         .transaction-details p {
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             color: #64748b;
         }
 
         .transaction-amount {
             font-weight: 700;
-            font-size: 1rem;
+            font-size: 1.1rem;
         }
 
         .income-amount {
@@ -376,110 +410,123 @@
         }
 
         .charts-container {
-            margin-top: 20px;
+            margin-top: 25px;
             background: var(--card-bg);
-            border-radius: 16px;
-            padding: 20px;
+            border-radius: var(--border-radius);
+            padding: 25px;
             box-shadow: var(--card-shadow);
         }
 
         .chart-row {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 20px;
+            gap: 25px;
+        }
+
+        @media (min-width: 768px) {
+            .chart-row {
+                grid-template-columns: 1fr 1fr;
+            }
         }
 
         .chart-card {
-            height: 280px;
+            height: 300px;
         }
 
         .chart-title {
-            font-size: 1.2rem;
-            margin-bottom: 15px;
+            font-size: 1.25rem;
+            margin-bottom: 20px;
             color: var(--dark);
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 12px;
         }
 
         .export-section {
             background: var(--card-bg);
-            border-radius: 16px;
-            padding: 20px;
+            border-radius: var(--border-radius);
+            padding: 25px;
             box-shadow: var(--card-shadow);
-            margin-top: 20px;
+            margin-top: 25px;
         }
 
         .export-options {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-top: 15px;
+            grid-template-columns: 1fr;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        @media (min-width: 576px) {
+            .export-options {
+                grid-template-columns: 1fr 1fr;
+            }
         }
 
         .export-btn {
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 15px;
+            padding: 20px;
             border-radius: 12px;
-            background: #f1f5f9;
+            background: #f8fafc;
             border: none;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: var(--transition);
+            text-align: center;
         }
 
         .export-btn:hover {
-            background: #e2e8f0;
-            transform: translateY(-3px);
+            background: #f1f5f9;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
         }
 
         .export-icon {
-            width: 45px;
-            height: 45px;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
             background: linear-gradient(135deg, var(--nigerian-green), var(--primary));
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
-            font-size: 1.3rem;
-            margin-bottom: 10px;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
         }
 
         .export-btn span {
             font-weight: 600;
             color: var(--dark);
-            font-size: 0.9rem;
+            font-size: 1rem;
         }
 
         .empty-state {
             text-align: center;
-            padding: 30px 15px;
+            padding: 40px 20px;
             color: #64748b;
         }
 
         .empty-state i {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
+            font-size: 3rem;
+            margin-bottom: 15px;
             opacity: 0.3;
         }
 
         .notification {
             position: fixed;
-            bottom: 15px;
-            right: 15px;
-            padding: 12px 20px;
+            bottom: 20px;
+            right: 20px;
+            padding: 15px 25px;
             background: var(--nigerian-green);
             color: white;
             border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
             z-index: 1000;
             opacity: 0;
             transform: translateY(20px);
-            transition: all 0.3s ease;
+            transition: var(--transition);
             max-width: 90%;
-            font-size: 0.95rem;
         }
 
         .notification.show {
@@ -500,7 +547,7 @@
             z-index: 2000;
             opacity: 0;
             visibility: hidden;
-            transition: all 0.3s ease;
+            transition: var(--transition);
         }
 
         .modal-overlay.active {
@@ -510,13 +557,13 @@
 
         .modal {
             background: white;
-            border-radius: 16px;
-            padding: 25px;
+            border-radius: var(--border-radius);
+            padding: 30px;
             width: 90%;
             max-width: 400px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
             transform: translateY(-20px);
-            transition: transform 0.3s ease;
+            transition: var(--transition);
         }
 
         .modal-overlay.active .modal {
@@ -531,7 +578,7 @@
         }
 
         .modal-title {
-            font-size: 1.4rem;
+            font-size: 1.5rem;
             color: var(--dark);
             font-weight: 600;
         }
@@ -539,28 +586,34 @@
         .close-modal {
             background: none;
             border: none;
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             cursor: pointer;
             color: #64748b;
+            transition: var(--transition);
+        }
+
+        .close-modal:hover {
+            color: var(--dark);
         }
 
         .modal-body {
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
 
         .modal-footer {
             display: flex;
-            gap: 10px;
+            gap: 12px;
             justify-content: flex-end;
         }
 
         .modal-btn {
-            padding: 10px 20px;
+            padding: 10px 22px;
             border-radius: 8px;
             font-weight: 600;
             cursor: pointer;
             border: none;
-            transition: all 0.3s;
+            transition: var(--transition);
+            font-size: 1rem;
         }
 
         .modal-btn-primary {
@@ -568,30 +621,41 @@
             color: white;
         }
 
+        .modal-btn-primary:hover {
+            background: #007245;
+        }
+
         .modal-btn-secondary {
             background: #f1f5f9;
             color: var(--dark);
         }
 
+        .modal-btn-secondary:hover {
+            background: #e2e8f0;
+        }
+
+        .progress-bar {
+            height: 10px;
+            background: #e2e8f0;
+            border-radius: 5px;
+            overflow: hidden;
+            margin: 15px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--success);
+            border-radius: 5px;
+            transition: width 0.5s ease;
+        }
+
+        .mobile-hidden {
+            display: none;
+        }
+
         @media (min-width: 768px) {
-            .main-content {
-                grid-template-columns: 1fr 350px;
-            }
-            
-            .dashboard {
-                grid-template-columns: 1fr 1fr;
-            }
-            
-            .chart-row {
-                grid-template-columns: 1fr 1fr;
-            }
-            
-            header {
-                padding: 20px 30px;
-            }
-            
-            .logo h1 {
-                font-size: 2rem;
+            .mobile-hidden {
+                display: inline;
             }
         }
     </style>
@@ -603,7 +667,7 @@
                 <div class="logo-icon">
                     <i class="fas fa-wallet"></i>
                 </div>
-                <h1>FinTrack <span style="color: var(--nigerian-green);">NG</span></h1>
+                <h1>FinTrack <span style="color: var(--nigerian-green);">Pro</span></h1>
             </div>
             <div class="nav-buttons">
                 <button class="btn btn-outline" id="syncBtn">
@@ -650,13 +714,13 @@
                                 </div>
                                 Monthly Budget
                             </div>
-                            <button class="btn btn-outline" style="padding: 5px 10px; font-size: 0.9rem;" id="setBudgetBtn">
-                                <i class="fas fa-edit"></i> <span class="mobile-hidden">Set</span>
+                            <button class="btn btn-outline" id="setBudgetBtn">
+                                <i class="fas fa-edit"></i> <span class="mobile-hidden">Set Budget</span>
                             </button>
                         </div>
                         <div class="balance-amount"><span id="usedBudget">₦0.00</span> / <span id="totalBudget">₦0.00</span></div>
-                        <div class="progress-bar" style="margin: 15px 0; height: 10px; background: #e2e8f0; border-radius: 5px;">
-                            <div id="budgetProgress" style="width: 0%; height: 100%; background: var(--success); border-radius: 5px;"></div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="budgetProgress"></div>
                         </div>
                         <div class="balance-stats">
                             <div class="stat">
@@ -763,13 +827,13 @@
                             <div class="export-icon">
                                 <i class="fas fa-file-csv"></i>
                             </div>
-                            <span>CSV</span>
+                            <span>CSV Export</span>
                         </button>
                         <button class="export-btn" id="exportPdf">
                             <div class="export-icon">
                                 <i class="fas fa-file-pdf"></i>
                             </div>
-                            <span>PDF</span>
+                            <span>PDF Report</span>
                         </button>
                     </div>
                 </div>
@@ -1211,8 +1275,8 @@
             // Set budget
             function setBudget() {
                 const budgetAmount = parseFloat(budgetAmountInput.value);
-                if (isNaN(budgetAmount) {
-                    showNotification('Please enter a valid number', 'error');
+                if (isNaN(budgetAmount) || budgetAmount <= 0) {
+                    showNotification('Please enter a valid budget amount', 'error');
                     return;
                 }
                 
@@ -1220,6 +1284,7 @@
                 saveBudget();
                 updateBudgetDisplay();
                 budgetModal.classList.remove('active');
+                budgetAmountInput.value = '';
                 showNotification('Budget set successfully!');
             }
             
@@ -1261,7 +1326,7 @@
                 
                 // Title
                 doc.setFontSize(18);
-                doc.text('FinTrack NG - Transaction Report', 105, 15, null, null, 'center');
+                doc.text('FinTrack Pro - Transaction Report', 105, 15, null, null, 'center');
                 
                 // Date
                 doc.setFontSize(12);

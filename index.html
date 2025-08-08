@@ -3,9 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FinTrack Pro | Premium Finance Tracker</title>
+    <title>FinTrack NG | Personal Finance Tracker</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
     <style>
         :root {
             --primary: #2563eb;
@@ -17,6 +19,8 @@
             --light: #f8fafc;
             --card-bg: rgba(255, 255, 255, 0.95);
             --card-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+            --nigerian-green: #008751;
+            --nigerian-white: #ffffff;
         }
 
         * {
@@ -45,6 +49,10 @@
             align-items: center;
             padding: 20px 0;
             margin-bottom: 30px;
+            background: var(--nigerian-white);
+            border-radius: 16px;
+            padding: 15px 30px;
+            box-shadow: var(--card-shadow);
         }
 
         .logo {
@@ -55,7 +63,7 @@
 
         .logo h1 {
             font-size: 2rem;
-            background: linear-gradient(to right, var(--primary), var(--secondary));
+            background: linear-gradient(to right, var(--nigerian-green), var(--primary));
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -65,7 +73,7 @@
         .logo-icon {
             width: 50px;
             height: 50px;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            background: linear-gradient(135deg, var(--nigerian-green), var(--primary));
             border-radius: 12px;
             display: flex;
             align-items: center;
@@ -94,15 +102,15 @@
         }
 
         .btn-primary {
-            background: linear-gradient(to right, var(--primary), var(--secondary));
+            background: linear-gradient(to right, var(--nigerian-green), var(--primary));
             color: white;
             box-shadow: var(--card-shadow);
         }
 
         .btn-outline {
             background: transparent;
-            border: 2px solid var(--primary);
-            color: var(--primary);
+            border: 2px solid var(--nigerian-green);
+            color: var(--nigerian-green);
         }
 
         .btn:hover {
@@ -155,7 +163,7 @@
         .card-icon {
             width: 40px;
             height: 40px;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            background: linear-gradient(135deg, var(--nigerian-green), var(--primary));
             border-radius: 10px;
             display: flex;
             align-items: center;
@@ -168,6 +176,11 @@
             font-weight: 800;
             margin: 15px 0;
             color: var(--dark);
+        }
+
+        .currency-symbol {
+            color: var(--nigerian-green);
+            font-size: 1.8rem;
         }
 
         .balance-stats {
@@ -241,8 +254,8 @@
 
         .form-control:focus {
             outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+            border-color: var(--nigerian-green);
+            box-shadow: 0 0 0 3px rgba(0, 135, 81, 0.2);
         }
 
         .form-row {
@@ -255,7 +268,7 @@
         }
 
         .btn-submit {
-            background: linear-gradient(to right, var(--success), #34d399);
+            background: linear-gradient(to right, var(--nigerian-green), #34d399);
             color: white;
             width: 100%;
             padding: 14px;
@@ -294,7 +307,7 @@
         }
 
         .filter-btn.active {
-            background: var(--primary);
+            background: var(--nigerian-green);
             color: white;
         }
 
@@ -427,7 +440,7 @@
             width: 50px;
             height: 50px;
             border-radius: 50%;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            background: linear-gradient(135deg, var(--nigerian-green), var(--primary));
             display: flex;
             align-items: center;
             justify-content: center;
@@ -451,6 +464,26 @@
             font-size: 3rem;
             margin-bottom: 15px;
             opacity: 0.3;
+        }
+
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 15px 25px;
+            background: var(--nigerian-green);
+            color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+        }
+
+        .notification.show {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         @media (max-width: 900px) {
@@ -480,13 +513,13 @@
                 <div class="logo-icon">
                     <i class="fas fa-wallet"></i>
                 </div>
-                <h1>FinTrack Pro</h1>
+                <h1>FinTrack <span style="color: var(--nigerian-green);">NG</span></h1>
             </div>
             <div class="nav-buttons">
-                <button class="btn btn-outline">
+                <button class="btn btn-outline" id="syncBtn">
                     <i class="fas fa-sync-alt"></i> Sync
                 </button>
-                <button class="btn btn-primary">
+                <button class="btn btn-primary" id="exportBtn">
                     <i class="fas fa-download"></i> Export Data
                 </button>
             </div>
@@ -506,14 +539,14 @@
                             </div>
                             <i class="fas fa-ellipsis-h"></i>
                         </div>
-                        <div class="balance-amount">$8,245.60</div>
+                        <div class="balance-amount"><span class="currency-symbol">₦</span> <span id="currentBalance">0.00</span></div>
                         <div class="balance-stats">
                             <div class="stat">
-                                <div class="stat-value income-value">+$2,450</div>
+                                <div class="stat-value income-value" id="totalIncome">₦0.00</div>
                                 <div class="stat-label">Income</div>
                             </div>
                             <div class="stat">
-                                <div class="stat-value expense-value">-$1,204</div>
+                                <div class="stat-value expense-value" id="totalExpense">₦0.00</div>
                                 <div class="stat-label">Expenses</div>
                             </div>
                         </div>
@@ -528,19 +561,21 @@
                                 </div>
                                 Monthly Budget
                             </div>
-                            <i class="fas fa-ellipsis-h"></i>
+                            <button class="btn btn-outline" style="padding: 5px 10px; font-size: 0.9rem;" id="setBudgetBtn">
+                                <i class="fas fa-edit"></i> Set
+                            </button>
                         </div>
-                        <div class="balance-amount">$3,200 / $4,000</div>
+                        <div class="balance-amount"><span id="usedBudget">₦0.00</span> / <span id="totalBudget">₦0.00</span></div>
                         <div class="progress-bar" style="margin: 20px 0; height: 10px; background: #e2e8f0; border-radius: 5px;">
-                            <div style="width: 80%; height: 100%; background: var(--success); border-radius: 5px;"></div>
+                            <div id="budgetProgress" style="width: 0%; height: 100%; background: var(--success); border-radius: 5px;"></div>
                         </div>
                         <div class="balance-stats">
                             <div class="stat">
-                                <div class="stat-value">$800</div>
+                                <div class="stat-value" id="remainingBudget">₦0.00</div>
                                 <div class="stat-label">Remaining</div>
                             </div>
                             <div class="stat">
-                                <div class="stat-value">22 days</div>
+                                <div class="stat-value" id="daysLeft">0 days</div>
                                 <div class="stat-label">Left</div>
                             </div>
                         </div>
@@ -560,7 +595,7 @@
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label for="amount">Amount</label>
+                                <label for="amount">Amount (₦)</label>
                                 <input type="number" id="amount" class="form-control" placeholder="0.00" step="0.01" min="0">
                             </div>
                         </div>
@@ -616,77 +651,17 @@
                     <div class="list-header">
                         <h2 class="card-title"><i class="fas fa-list"></i> Recent Transactions</h2>
                         <div class="filters">
-                            <button class="filter-btn active">All</button>
-                            <button class="filter-btn">Income</button>
-                            <button class="filter-btn">Expense</button>
+                            <button class="filter-btn active" data-filter="all">All</button>
+                            <button class="filter-btn" data-filter="income">Income</button>
+                            <button class="filter-btn" data-filter="expense">Expense</button>
                         </div>
                     </div>
                     
                     <div id="transactionsContainer">
-                        <!-- Transactions will be added here dynamically -->
-                        <div class="transaction-item">
-                            <div class="transaction-info">
-                                <div class="transaction-icon category-salary">
-                                    <i class="fas fa-money-check"></i>
-                                </div>
-                                <div class="transaction-details">
-                                    <h3>Monthly Salary</h3>
-                                    <p>May 30 • Salary</p>
-                                </div>
-                            </div>
-                            <div class="transaction-amount income-amount">+$3,200.00</div>
-                        </div>
-                        
-                        <div class="transaction-item">
-                            <div class="transaction-info">
-                                <div class="transaction-icon category-housing">
-                                    <i class="fas fa-home"></i>
-                                </div>
-                                <div class="transaction-details">
-                                    <h3>Apartment Rent</h3>
-                                    <p>May 28 • Housing</p>
-                                </div>
-                            </div>
-                            <div class="transaction-amount expense-amount">-$1,200.00</div>
-                        </div>
-                        
-                        <div class="transaction-item">
-                            <div class="transaction-info">
-                                <div class="transaction-icon category-food">
-                                    <i class="fas fa-utensils"></i>
-                                </div>
-                                <div class="transaction-details">
-                                    <h3>Grocery Shopping</h3>
-                                    <p>May 27 • Food</p>
-                                </div>
-                            </div>
-                            <div class="transaction-amount expense-amount">-$86.75</div>
-                        </div>
-                        
-                        <div class="transaction-item">
-                            <div class="transaction-info">
-                                <div class="transaction-icon category-transport">
-                                    <i class="fas fa-gas-pump"></i>
-                                </div>
-                                <div class="transaction-details">
-                                    <h3>Gas Station</h3>
-                                    <p>May 26 • Transport</p>
-                                </div>
-                            </div>
-                            <div class="transaction-amount expense-amount">-$45.20</div>
-                        </div>
-                        
-                        <div class="transaction-item">
-                            <div class="transaction-info">
-                                <div class="transaction-icon category-entertainment">
-                                    <i class="fas fa-gamepad"></i>
-                                </div>
-                                <div class="transaction-details">
-                                    <h3>Netflix Subscription</h3>
-                                    <p>May 25 • Entertainment</p>
-                                </div>
-                            </div>
-                            <div class="transaction-amount expense-amount">-$14.99</div>
+                        <div class="empty-state">
+                            <i class="fas fa-exchange-alt"></i>
+                            <h3>No transactions yet</h3>
+                            <p>Add your first transaction to get started</p>
                         </div>
                     </div>
                 </div>
@@ -695,13 +670,13 @@
                     <h2 class="card-title"><i class="fas fa-file-export"></i> Export Data</h2>
                     <p>Download your financial data for backup or analysis</p>
                     <div class="export-options">
-                        <button class="export-btn">
+                        <button class="export-btn" id="exportCsv">
                             <div class="export-icon">
                                 <i class="fas fa-file-csv"></i>
                             </div>
                             <span>CSV Format</span>
                         </button>
-                        <button class="export-btn">
+                        <button class="export-btn" id="exportPdf">
                             <div class="export-icon">
                                 <i class="fas fa-file-pdf"></i>
                             </div>
@@ -713,83 +688,137 @@
         </div>
     </div>
 
+    <div class="notification" id="notification">Transaction added successfully!</div>
+
     <script>
         // Initialize the application
         document.addEventListener('DOMContentLoaded', function() {
+            // Initialize variables
+            let transactions = JSON.parse(localStorage.getItem('transactions')) || [];
+            let budget = JSON.parse(localStorage.getItem('budget')) || { total: 0, used: 0 };
+            let currentFilter = 'all';
+            
+            // DOM Elements
+            const transactionForm = document.getElementById('transactionForm');
+            const transactionsContainer = document.getElementById('transactionsContainer');
+            const currentBalanceEl = document.getElementById('currentBalance');
+            const totalIncomeEl = document.getElementById('totalIncome');
+            const totalExpenseEl = document.getElementById('totalExpense');
+            const usedBudgetEl = document.getElementById('usedBudget');
+            const totalBudgetEl = document.getElementById('totalBudget');
+            const remainingBudgetEl = document.getElementById('remainingBudget');
+            const budgetProgressEl = document.getElementById('budgetProgress');
+            const daysLeftEl = document.getElementById('daysLeft');
+            const notification = document.getElementById('notification');
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            const exportCsvBtn = document.getElementById('exportCsv');
+            const exportPdfBtn = document.getElementById('exportPdf');
+            const setBudgetBtn = document.getElementById('setBudgetBtn');
+            const syncBtn = document.getElementById('syncBtn');
+            
             // Initialize charts
-            const spendingCtx = document.getElementById('spendingChart').getContext('2d');
-            const spendingChart = new Chart(spendingCtx, {
-                type: 'doughnut',
-                data: {
-                    labels: ['Housing', 'Food', 'Transport', 'Entertainment', 'Shopping', 'Other'],
-                    datasets: [{
-                        data: [35, 20, 15, 12, 10, 8],
-                        backgroundColor: [
-                            '#ec4899', '#f59e0b', '#0ea5e9', '#f97316', '#8b5cf6', '#64748b'
-                        ],
-                        borderWidth: 0
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            position: 'bottom',
-                            labels: {
-                                padding: 20,
-                                usePointStyle: true,
-                                pointStyle: 'circle'
+            let spendingChart, incomeChart;
+            initCharts();
+            
+            // Update UI with initial data
+            updateBalances();
+            updateBudgetDisplay();
+            renderTransactions();
+            
+            // Set today's date as default
+            document.getElementById('date').value = new Date().toISOString().split('T')[0];
+            
+            // Event Listeners
+            transactionForm.addEventListener('submit', addTransaction);
+            filterButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    filterButtons.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    currentFilter = btn.dataset.filter;
+                    renderTransactions();
+                });
+            });
+            
+            exportCsvBtn.addEventListener('click', exportToCsv);
+            exportPdfBtn.addEventListener('click', exportToPdf);
+            setBudgetBtn.addEventListener('click', setBudget);
+            syncBtn.addEventListener('click', showSyncMessage);
+            
+            // Initialize charts with empty data
+            function initCharts() {
+                const spendingCtx = document.getElementById('spendingChart').getContext('2d');
+                spendingChart = new Chart(spendingCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Housing', 'Food', 'Transport', 'Entertainment', 'Shopping', 'Other'],
+                        datasets: [{
+                            data: [0, 0, 0, 0, 0, 0],
+                            backgroundColor: [
+                                '#ec4899', '#f59e0b', '#0ea5e9', '#f97316', '#8b5cf6', '#64748b'
+                            ],
+                            borderWidth: 0
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: {
+                                    padding: 20,
+                                    usePointStyle: true,
+                                    pointStyle: 'circle'
+                                }
                             }
                         }
                     }
-                }
-            });
-            
-            const incomeCtx = document.getElementById('incomeChart').getContext('2d');
-            const incomeChart = new Chart(incomeCtx, {
-                type: 'bar',
-                data: {
-                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
-                    datasets: [{
-                        label: 'Income',
-                        data: [3200, 3400, 3100, 3500, 3800],
-                        backgroundColor: '#10b981',
-                        borderRadius: 6
-                    }, {
-                        label: 'Expenses',
-                        data: [2200, 2400, 2300, 2500, 2600],
-                        backgroundColor: '#ef4444',
-                        borderRadius: 6
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            position: 'top'
-                        }
+                });
+                
+                const incomeCtx = document.getElementById('incomeChart').getContext('2d');
+                incomeChart = new Chart(incomeCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
+                        datasets: [{
+                            label: 'Income',
+                            data: [0, 0, 0, 0, 0],
+                            backgroundColor: '#10b981',
+                            borderRadius: 6
+                        }, {
+                            label: 'Expenses',
+                            data: [0, 0, 0, 0, 0],
+                            backgroundColor: '#ef4444',
+                            borderRadius: 6
+                        }]
                     },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            grid: {
-                                drawBorder: false
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'top'
                             }
                         },
-                        x: {
-                            grid: {
-                                display: false
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                grid: {
+                                    drawBorder: false
+                                }
+                            },
+                            x: {
+                                grid: {
+                                    display: false
+                                }
                             }
                         }
                     }
-                }
-            });
+                });
+            }
             
-            // Transaction form handling
-            const transactionForm = document.getElementById('transactionForm');
-            transactionForm.addEventListener('submit', function(e) {
+            // Add new transaction
+            function addTransaction(e) {
                 e.preventDefault();
                 
                 const type = document.getElementById('transactionType').value;
@@ -799,100 +828,354 @@
                 const date = document.getElementById('date').value || new Date().toISOString().split('T')[0];
                 
                 if (!amount || amount <= 0) {
-                    alert('Please enter a valid amount');
+                    showNotification('Please enter a valid amount', 'error');
                     return;
                 }
                 
-                // Create transaction element
-                const transactionItem = document.createElement('div');
-                transactionItem.className = 'transaction-item';
+                const transaction = {
+                    id: Date.now(),
+                    type,
+                    amount,
+                    category,
+                    description: description || 'New Transaction',
+                    date
+                };
                 
-                // Determine icon and color based on category
-                let iconClass, iconBg, iconName;
+                transactions.push(transaction);
+                saveData();
                 
-                switch(category) {
-                    case 'salary':
-                        iconClass = 'category-income';
-                        iconBg = 'category-salary';
-                        iconName = 'fas fa-money-check';
-                        break;
-                    case 'freelance':
-                        iconClass = 'category-income';
-                        iconBg = 'category-other';
-                        iconName = 'fas fa-laptop';
-                        break;
-                    case 'investment':
-                        iconClass = 'category-income';
-                        iconBg = 'category-other';
-                        iconName = 'fas fa-chart-line';
-                        break;
-                    case 'food':
-                        iconClass = 'category-food';
-                        iconBg = 'category-food';
-                        iconName = 'fas fa-utensils';
-                        break;
-                    case 'shopping':
-                        iconClass = 'category-shopping';
-                        iconBg = 'category-shopping';
-                        iconName = 'fas fa-shopping-bag';
-                        break;
-                    case 'transport':
-                        iconClass = 'category-transport';
-                        iconBg = 'category-transport';
-                        iconName = 'fas fa-car';
-                        break;
-                    case 'housing':
-                        iconClass = 'category-housing';
-                        iconBg = 'category-housing';
-                        iconName = 'fas fa-home';
-                        break;
-                    case 'entertainment':
-                        iconClass = 'category-entertainment';
-                        iconBg = 'category-entertainment';
-                        iconName = 'fas fa-gamepad';
-                        break;
-                    default:
-                        iconClass = 'category-other';
-                        iconBg = 'category-other';
-                        iconName = 'fas fa-question';
+                // Update budget if it's an expense
+                if (type === 'expense') {
+                    budget.used += amount;
+                    saveBudget();
                 }
                 
-                transactionItem.innerHTML = `
-                    <div class="transaction-info">
-                        <div class="transaction-icon ${iconBg}">
-                            <i class="${iconName}"></i>
-                        </div>
-                        <div class="transaction-details">
-                            <h3>${description || 'New Transaction'}</h3>
-                            <p>${formatDate(date)} • ${formatCategory(category)}</p>
-                        </div>
-                    </div>
-                    <div class="transaction-amount ${type === 'income' ? 'income-amount' : 'expense-amount'}">
-                        ${type === 'income' ? '+' : '-'}$${amount.toFixed(2)}
-                    </div>
-                `;
+                updateBalances();
+                updateCharts();
+                renderTransactions();
                 
-                // Prepend to the container
-                document.getElementById('transactionsContainer').prepend(transactionItem);
-                
-                // Show success notification
-                showNotification(`Transaction added: ${type === 'income' ? 'Income' : 'Expense'} of $${amount.toFixed(2)}`);
-                
-                // Reset form
                 transactionForm.reset();
                 document.getElementById('date').value = new Date().toISOString().split('T')[0];
-            });
+                
+                showNotification('Transaction added successfully!');
+            }
             
-            // Set today's date as default
-            document.getElementById('date').value = new Date().toISOString().split('T')[0];
-            
-            // Filter buttons
-            document.querySelectorAll('.filter-btn').forEach(button => {
-                button.addEventListener('click', function() {
-                    document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
-                    this.classList.add('active');
+            // Render transactions based on filter
+            function renderTransactions() {
+                if (transactions.length === 0) {
+                    transactionsContainer.innerHTML = `
+                        <div class="empty-state">
+                            <i class="fas fa-exchange-alt"></i>
+                            <h3>No transactions yet</h3>
+                            <p>Add your first transaction to get started</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                const filteredTransactions = transactions.filter(t => {
+                    if (currentFilter === 'all') return true;
+                    return t.type === currentFilter;
                 });
-            });
+                
+                if (filteredTransactions.length === 0) {
+                    transactionsContainer.innerHTML = `
+                        <div class="empty-state">
+                            <i class="fas fa-search"></i>
+                            <h3>No ${currentFilter} transactions</h3>
+                            <p>Try changing your filter</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                transactionsContainer.innerHTML = '';
+                
+                filteredTransactions.slice().reverse().forEach(transaction => {
+                    const transactionItem = document.createElement('div');
+                    transactionItem.className = 'transaction-item';
+                    
+                    // Determine icon and color based on category
+                    let iconClass, iconBg, iconName;
+                    
+                    switch(transaction.category) {
+                        case 'salary':
+                            iconClass = 'category-income';
+                            iconBg = 'category-salary';
+                            iconName = 'fas fa-money-check';
+                            break;
+                        case 'freelance':
+                            iconClass = 'category-income';
+                            iconBg = 'category-other';
+                            iconName = 'fas fa-laptop';
+                            break;
+                        case 'investment':
+                            iconClass = 'category-income';
+                            iconBg = 'category-other';
+                            iconName = 'fas fa-chart-line';
+                            break;
+                        case 'food':
+                            iconClass = 'category-food';
+                            iconBg = 'category-food';
+                            iconName = 'fas fa-utensils';
+                            break;
+                        case 'shopping':
+                            iconClass = 'category-shopping';
+                            iconBg = 'category-shopping';
+                            iconName = 'fas fa-shopping-bag';
+                            break;
+                        case 'transport':
+                            iconClass = 'category-transport';
+                            iconBg = 'category-transport';
+                            iconName = 'fas fa-car';
+                            break;
+                        case 'housing':
+                            iconClass = 'category-housing';
+                            iconBg = 'category-housing';
+                            iconName = 'fas fa-home';
+                            break;
+                        case 'entertainment':
+                            iconClass = 'category-entertainment';
+                            iconBg = 'category-entertainment';
+                            iconName = 'fas fa-gamepad';
+                            break;
+                        default:
+                            iconClass = 'category-other';
+                            iconBg = 'category-other';
+                            iconName = 'fas fa-question';
+                    }
+                    
+                    transactionItem.innerHTML = `
+                        <div class="transaction-info">
+                            <div class="transaction-icon ${iconBg}">
+                                <i class="${iconName}"></i>
+                            </div>
+                            <div class="transaction-details">
+                                <h3>${transaction.description}</h3>
+                                <p>${formatDate(transaction.date)} • ${formatCategory(transaction.category)}</p>
+                            </div>
+                        </div>
+                        <div class="transaction-amount ${transaction.type === 'income' ? 'income-amount' : 'expense-amount'}">
+                            ${transaction.type === 'income' ? '+' : '-'}₦${transaction.amount.toFixed(2)}
+                        </div>
+                    `;
+                    
+                    transactionsContainer.appendChild(transactionItem);
+                });
+            }
+            
+            // Update balance displays
+            function updateBalances() {
+                const totalIncome = transactions
+                    .filter(t => t.type === 'income')
+                    .reduce((sum, t) => sum + t.amount, 0);
+                
+                const totalExpense = transactions
+                    .filter(t => t.type === 'expense')
+                    .reduce((sum, t) => sum + t.amount, 0);
+                
+                const balance = totalIncome - totalExpense;
+                
+                currentBalanceEl.textContent = balance.toFixed(2);
+                totalIncomeEl.textContent = `₦${totalIncome.toFixed(2)}`;
+                totalExpenseEl.textContent = `₦${totalExpense.toFixed(2)}`;
+            }
+            
+            // Update budget display
+            function updateBudgetDisplay() {
+                totalBudgetEl.textContent = `₦${budget.total.toFixed(2)}`;
+                usedBudgetEl.textContent = `₦${budget.used.toFixed(2)}`;
+                
+                const remaining = budget.total - budget.used;
+                remainingBudgetEl.textContent = `₦${remaining > 0 ? remaining.toFixed(2) : '0.00'}`;
+                
+                const percentage = budget.total > 0 ? (budget.used / budget.total) * 100 : 0;
+                budgetProgressEl.style.width = `${Math.min(percentage, 100)}%`;
+                
+                // Change progress color based on usage
+                if (percentage > 90) {
+                    budgetProgressEl.style.background = 'var(--danger)';
+                } else if (percentage > 75) {
+                    budgetProgressEl.style.background = 'var(--warning)';
+                } else {
+                    budgetProgressEl.style.background = 'var(--success)';
+                }
+                
+                // Calculate days left in month
+                const today = new Date();
+                const lastDay = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+                const days = lastDay.getDate() - today.getDate();
+                daysLeftEl.textContent = `${days} ${days === 1 ? 'day' : 'days'}`;
+            }
+            
+            // Update charts with real data
+            function updateCharts() {
+                // Update spending chart
+                const spendingData = {
+                    housing: 0,
+                    food: 0,
+                    transport: 0,
+                    entertainment: 0,
+                    shopping: 0,
+                    other: 0
+                };
+                
+                transactions.filter(t => t.type === 'expense').forEach(t => {
+                    spendingData[t.category] = (spendingData[t.category] || 0) + t.amount;
+                });
+                
+                spendingChart.data.datasets[0].data = [
+                    spendingData.housing,
+                    spendingData.food,
+                    spendingData.transport,
+                    spendingData.entertainment,
+                    spendingData.shopping,
+                    spendingData.other
+                ];
+                spendingChart.update();
+                
+                // Update income vs expense chart
+                const monthlyData = {
+                    Jan: { income: 0, expense: 0 },
+                    Feb: { income: 0, expense: 0 },
+                    Mar: { income: 0, expense: 0 },
+                    Apr: { income: 0, expense: 0 },
+                    May: { income: 0, expense: 0 }
+                };
+                
+                transactions.forEach(t => {
+                    const month = new Date(t.date).toLocaleString('default', { month: 'short' });
+                    if (monthlyData[month]) {
+                        monthlyData[month][t.type] += t.amount;
+                    }
+                });
+                
+                incomeChart.data.datasets[0].data = Object.values(monthlyData).map(m => m.income);
+                incomeChart.data.datasets[1].data = Object.values(monthlyData).map(m => m.expense);
+                incomeChart.update();
+            }
+            
+            // Set budget
+            function setBudget() {
+                const budgetAmount = prompt('Enter your monthly budget (₦):', budget.total || '');
+                if (budgetAmount === null) return;
+                
+                const amount = parseFloat(budgetAmount);
+                if (isNaN(amount) {
+                    showNotification('Please enter a valid number', 'error');
+                    return;
+                }
+                
+                budget.total = amount;
+                budget.used = transactions
+                    .filter(t => t.type === 'expense')
+                    .reduce((sum, t) => sum + t.amount, 0);
+                
+                saveBudget();
+                updateBudgetDisplay();
+                showNotification('Budget set successfully!');
+            }
+            
+            // Export to CSV
+            function exportToCsv() {
+                if (transactions.length === 0) {
+                    showNotification('No transactions to export', 'error');
+                    return;
+                }
+                
+                let csvContent = 'Date,Type,Category,Description,Amount (₦)\n';
+                
+                transactions.forEach(t => {
+                    csvContent += `${t.date},${t.type},${t.category},${t.description},${t.amount}\n`;
+                });
+                
+                const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.setAttribute('href', url);
+                link.setAttribute('download', `fintrack-export-${new Date().toISOString().slice(0, 10)}.csv`);
+                link.style.visibility = 'hidden';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                
+                showNotification('CSV exported successfully!');
+            }
+            
+            // Export to PDF
+            function exportToPdf() {
+                if (transactions.length === 0) {
+                    showNotification('No transactions to export', 'error');
+                    return;
+                }
+                
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF();
+                
+                // Title
+                doc.setFontSize(18);
+                doc.text('FinTrack NG - Transaction Report', 105, 15, null, null, 'center');
+                
+                // Date
+                doc.setFontSize(12);
+                doc.text(`Generated: ${new Date().toLocaleDateString()}`, 105, 25, null, null, 'center');
+                
+                // Summary
+                doc.setFontSize(14);
+                doc.text('Financial Summary', 15, 35);
+                
+                doc.setFontSize(12);
+                doc.text(`Current Balance: ₦${document.getElementById('currentBalance').textContent}`, 20, 45);
+                doc.text(`Total Income: ₦${document.getElementById('totalIncome').textContent.slice(1)}`, 20, 55);
+                doc.text(`Total Expenses: ₦${document.getElementById('totalExpense').textContent.slice(1)}`, 20, 65);
+                
+                // Transactions table
+                doc.setFontSize(14);
+                doc.text('Transaction History', 15, 80);
+                
+                const tableData = transactions.map(t => [
+                    t.date,
+                    t.type.charAt(0).toUpperCase() + t.type.slice(1),
+                    t.category,
+                    t.description,
+                    `₦${t.amount.toFixed(2)}`
+                ]);
+                
+                doc.autoTable({
+                    head: [['Date', 'Type', 'Category', 'Description', 'Amount']],
+                    body: tableData,
+                    startY: 85,
+                    theme: 'grid',
+                    headStyles: { fillColor: [0, 135, 81] },
+                    columnStyles: {
+                        0: { cellWidth: 25 },
+                        1: { cellWidth: 20 },
+                        2: { cellWidth: 25 },
+                        3: { cellWidth: 60 },
+                        4: { cellWidth: 25 }
+                    }
+                });
+                
+                // Save PDF
+                doc.save(`fintrack-report-${new Date().toISOString().slice(0, 10)}.pdf`);
+                showNotification('PDF exported successfully!');
+            }
+            
+            // Show sync message
+            function showSyncMessage() {
+                showNotification('Sync feature coming in the next update!');
+            }
+            
+            // Show notification
+            function showNotification(message, type = 'success') {
+                notification.textContent = message;
+                notification.style.background = type === 'error' ? 'var(--danger)' : 'var(--nigerian-green)';
+                notification.classList.add('show');
+                
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                }, 3000);
+            }
             
             // Helper functions
             function formatDate(dateString) {
@@ -904,38 +1187,12 @@
                 return category.charAt(0).toUpperCase() + category.slice(1);
             }
             
-            function showNotification(message) {
-                const notification = document.createElement('div');
-                notification.style.position = 'fixed';
-                notification.style.bottom = '20px';
-                notification.style.right = '20px';
-                notification.style.padding = '15px 25px';
-                notification.style.backgroundColor = '#10b981';
-                notification.style.color = 'white';
-                notification.style.borderRadius = '10px';
-                notification.style.boxShadow = '0 5px 15px rgba(0, 0, 0, 0.1)';
-                notification.style.zIndex = '1000';
-                notification.style.opacity = '0';
-                notification.style.transform = 'translateY(20px)';
-                notification.style.transition = 'all 0.3s ease';
-                notification.innerText = message;
-                
-                document.body.appendChild(notification);
-                
-                // Animate in
-                setTimeout(() => {
-                    notification.style.opacity = '1';
-                    notification.style.transform = 'translateY(0)';
-                }, 10);
-                
-                // Animate out after 3 seconds
-                setTimeout(() => {
-                    notification.style.opacity = '0';
-                    notification.style.transform = 'translateY(20px)';
-                    setTimeout(() => {
-                        document.body.removeChild(notification);
-                    }, 300);
-                }, 3000);
+            function saveData() {
+                localStorage.setItem('transactions', JSON.stringify(transactions));
+            }
+            
+            function saveBudget() {
+                localStorage.setItem('budget', JSON.stringify(budget));
             }
         });
     </script>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FinTrack NG | Mobile Finance Tracker</title>
+    <title>FinTrack NG | Complete Finance Tracker</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -1121,6 +1121,7 @@
                 updateBalances();
                 updateCharts();
                 renderTransactions();
+                updateBudgetDisplay(); // Ensure budget display updates
                 
                 transactionForm.reset();
                 document.getElementById('date').value = new Date().toISOString().split('T')[0];
@@ -1252,17 +1253,19 @@
             // Update budget display
             function updateBudgetDisplay() {
                 // Recalculate used budget from transactions
-                budget.used = transactions
+                const used = transactions
                     .filter(t => t.type === 'expense')
                     .reduce((sum, t) => sum + t.amount, 0);
                 
-                totalBudgetEl.textContent = `₦${budget.total.toFixed(2)}`;
-                usedBudgetEl.textContent = `₦${budget.used.toFixed(2)}`;
+                budget.used = used; // Update budget object
                 
-                const remaining = budget.total - budget.used;
+                totalBudgetEl.textContent = `₦${budget.total.toFixed(2)}`;
+                usedBudgetEl.textContent = `₦${used.toFixed(2)}`;
+                
+                const remaining = budget.total - used;
                 remainingBudgetEl.textContent = `₦${remaining > 0 ? remaining.toFixed(2) : '0.00'}`;
                 
-                const percentage = budget.total > 0 ? (budget.used / budget.total) * 100 : 0;
+                const percentage = budget.total > 0 ? (used / budget.total) * 100 : 0;
                 budgetProgressEl.style.width = `${Math.min(percentage, 100)}%`;
                 
                 // Change progress color based on usage
@@ -1410,10 +1413,12 @@
                 doc.text(`Current Balance: ₦${document.getElementById('currentBalance').textContent}`, 20, 38);
                 doc.text(`Total Income: ₦${document.getElementById('totalIncome').textContent.slice(1)}`, 20, 45);
                 doc.text(`Total Expenses: ₦${document.getElementById('totalExpense').textContent.slice(1)}`, 20, 52);
+                doc.text(`Monthly Budget: ₦${budget.total.toFixed(2)}`, 20, 59);
+                doc.text(`Budget Used: ₦${budget.used.toFixed(2)}`, 20, 66);
                 
                 // Transactions table
                 doc.setFontSize(12);
-                doc.text('Transaction History', 15, 65);
+                doc.text('Transaction History', 15, 75);
                 
                 const tableData = transactions.map(t => [
                     t.date,
@@ -1426,7 +1431,7 @@
                 doc.autoTable({
                     head: [['Date', 'Type', 'Category', 'Description', 'Amount']],
                     body: tableData,
-                    startY: 70,
+                    startY: 80,
                     theme: 'grid',
                     headStyles: { fillColor: [0, 135, 81] },
                     columnStyles: {

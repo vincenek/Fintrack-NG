@@ -648,6 +648,151 @@
             transform: translateY(-3px);
         }
 
+        /* New Features Styling */
+        .feature-card {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .feature-section {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 15px;
+        }
+        
+        .feature-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .feature-icon {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--nigerian-green), var(--primary));
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.1rem;
+        }
+        
+        .feature-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        .debt-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        
+        .debt-card {
+            background: #f8fafc;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+        }
+        
+        .debt-card.owed-to-me {
+            border-left: 4px solid var(--success);
+        }
+        
+        .debt-card.owed-to-others {
+            border-left: 4px solid var(--danger);
+        }
+        
+        .debt-value {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin: 5px 0;
+        }
+        
+        .debt-label {
+            font-size: 0.8rem;
+            color: #64748b;
+        }
+        
+        .sms-import-btn {
+            background: linear-gradient(to right, #0ea5e9, #3b82f6);
+            color: white;
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: 600;
+            margin-top: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .local-insight {
+            background: #f0fdf4;
+            border-left: 4px solid var(--success);
+            padding: 12px;
+            border-radius: 4px;
+            margin-top: 15px;
+            font-size: 0.9rem;
+        }
+        
+        .insight-icon {
+            color: var(--success);
+            margin-right: 5px;
+        }
+        
+        .sync-options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .sync-btn {
+            background: #f1f5f9;
+            padding: 12px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .sync-btn:hover {
+            background: #e2e8f0;
+        }
+        
+        .sync-icon {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--nigerian-green), var(--primary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.9rem;
+        }
+        
+        .sync-label {
+            font-weight: 600;
+        }
+        
+        .sync-description {
+            font-size: 0.8rem;
+            color: #64748b;
+        }
+
         @media (min-width: 576px) {
             body {
                 padding: 20px;
@@ -673,6 +818,10 @@
                 padding: 10px 15px;
                 font-size: 0.9rem;
             }
+            
+            .debt-grid {
+                grid-template-columns: 1fr 1fr;
+            }
         }
 
         @media (min-width: 768px) {
@@ -688,6 +837,14 @@
             
             .right-column {
                 width: 350px;
+            }
+            
+            .feature-card {
+                flex-direction: row;
+            }
+            
+            .feature-section {
+                flex: 1;
             }
         }
     </style>
@@ -710,6 +867,50 @@
                 </button>
             </div>
         </header>
+        
+        <!-- New Features Section -->
+        <div class="feature-card">
+            <div class="feature-section">
+                <div class="feature-header">
+                    <div class="feature-icon">
+                        <i class="fas fa-hand-holding-usd"></i>
+                    </div>
+                    <div class="feature-title">Debt Tracker</div>
+                </div>
+                <div class="debt-grid">
+                    <div class="debt-card owed-to-me">
+                        <div class="debt-label">You're Owed</div>
+                        <div class="debt-value">₦<span id="owedToMe">0.00</span></div>
+                        <div class="debt-label" id="owedToMeCount">By 0 people</div>
+                    </div>
+                    <div class="debt-card owed-to-others">
+                        <div class="debt-label">You Owe</div>
+                        <div class="debt-value">₦<span id="owedToOthers">0.00</span></div>
+                        <div class="debt-label" id="owedToOthersCount">To 0 people</div>
+                    </div>
+                </div>
+                <button class="btn btn-outline" style="width:100%; margin-top:15px;" id="addDebtBtn">
+                    <i class="fas fa-plus"></i> Add Debt Record
+                </button>
+            </div>
+            
+            <div class="feature-section">
+                <div class="feature-header">
+                    <div class="feature-icon">
+                        <i class="fas fa-comment-alt"></i>
+                    </div>
+                    <div class="feature-title">SMS Import</div>
+                </div>
+                <p>Automatically import transactions from your bank SMS alerts</p>
+                <button class="sms-import-btn" id="smsImportBtn">
+                    <i class="fas fa-sms"></i> Import Bank Transactions
+                </button>
+                <div class="local-insight">
+                    <i class="fas fa-lightbulb insight-icon"></i>
+                    <strong>Nigerian Insight:</strong> Save 15 mins daily by automating transaction entry
+                </div>
+            </div>
+        </div>
         
         <div class="main-content">
             <div class="left-column">
@@ -829,6 +1030,37 @@
                     </div>
                 </div>
                 
+                <!-- Sync Options -->
+                <div class="feature-section">
+                    <div class="feature-header">
+                        <div class="feature-icon">
+                            <i class="fas fa-cloud"></i>
+                        </div>
+                        <div class="feature-title">Cloud Sync</div>
+                    </div>
+                    <p>Backup your data and access from multiple devices</p>
+                    <div class="sync-options">
+                        <button class="sync-btn" id="googleSyncBtn">
+                            <div class="sync-icon">
+                                <i class="fab fa-google-drive"></i>
+                            </div>
+                            <div>
+                                <div class="sync-label">Google Drive</div>
+                                <div class="sync-description">Sync with your Google account</div>
+                            </div>
+                        </button>
+                        <button class="sync-btn" id="smsBackupBtn">
+                            <div class="sync-icon">
+                                <i class="fas fa-sms"></i>
+                            </div>
+                            <div>
+                                <div class="sync-label">SMS Backup</div>
+                                <div class="sync-description">Receive encrypted backup via SMS</div>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+                
                 <!-- Reset Section -->
                 <div class="reset-section">
                     <button class="reset-btn" id="resetBtn">
@@ -882,6 +1114,7 @@
 
     <div class="notification" id="notification">Transaction added successfully!</div>
 
+    <!-- Budget Modal -->
     <div class="modal-overlay" id="budgetModal">
         <div class="modal">
             <div class="modal-header">
@@ -901,6 +1134,7 @@
         </div>
     </div>
 
+    <!-- Reset Modal -->
     <div class="modal-overlay" id="resetModal">
         <div class="modal">
             <div class="modal-header">
@@ -913,6 +1147,7 @@
                     <li>Clear all transactions</li>
                     <li>Reset your balance to zero</li>
                     <li>Reset your budget settings</li>
+                    <li>Clear all debt records</li>
                 </ul>
                 <p>This action cannot be undone.</p>
             </div>
@@ -923,12 +1158,56 @@
         </div>
     </div>
 
+    <!-- Debt Modal -->
+    <div class="modal-overlay" id="debtModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Add Debt Record</h3>
+                <button class="close-modal" id="closeDebtModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="debtType">Debt Type</label>
+                    <select id="debtType" class="form-control">
+                        <option value="owedToMe">Owed to Me</option>
+                        <option value="owedToOthers">I Owe</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="debtAmount">Amount (₦)</label>
+                    <input type="number" id="debtAmount" class="form-control" placeholder="0.00" step="0.01" min="0">
+                </div>
+                <div class="form-group">
+                    <label for="debtPerson">Person/Business</label>
+                    <input type="text" id="debtPerson" class="form-control" placeholder="Enter name">
+                </div>
+                <div class="form-group">
+                    <label for="debtDescription">Description</label>
+                    <input type="text" id="debtDescription" class="form-control" placeholder="Enter details">
+                </div>
+                <div class="form-group">
+                    <label for="debtDate">Date</label>
+                    <input type="date" id="debtDate" class="form-control">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn modal-btn-secondary" id="cancelDebt">Cancel</button>
+                <button class="modal-btn modal-btn-primary" id="saveDebt">Save Debt</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         // Initialize the application
         document.addEventListener('DOMContentLoaded', function() {
             // Initialize variables
             let transactions = JSON.parse(localStorage.getItem('transactions')) || [];
             let budget = JSON.parse(localStorage.getItem('budget')) || { total: 0, used: 0 };
+            let debts = JSON.parse(localStorage.getItem('debts')) || {
+                owedToMe: [],
+                owedToOthers: []
+            };
+            
             let currentFilter = 'all';
             
             // DOM Elements
@@ -958,6 +1237,18 @@
             const closeResetModal = document.getElementById('closeResetModal');
             const cancelReset = document.getElementById('cancelReset');
             const confirmReset = document.getElementById('confirmReset');
+            const smsImportBtn = document.getElementById('smsImportBtn');
+            const addDebtBtn = document.getElementById('addDebtBtn');
+            const debtModal = document.getElementById('debtModal');
+            const closeDebtModal = document.getElementById('closeDebtModal');
+            const cancelDebt = document.getElementById('cancelDebt');
+            const saveDebt = document.getElementById('saveDebt');
+            const googleSyncBtn = document.getElementById('googleSyncBtn');
+            const owedToMeEl = document.getElementById('owedToMe');
+            const owedToOthersEl = document.getElementById('owedToOthers');
+            const owedToMeCountEl = document.getElementById('owedToMeCount');
+            const owedToOthersCountEl = document.getElementById('owedToOthersCount');
+            const smsBackupBtn = document.getElementById('smsBackupBtn');
             
             // Initialize charts
             let spendingChart, incomeChart;
@@ -967,9 +1258,11 @@
             updateBalances();
             updateBudgetDisplay();
             renderTransactions();
+            updateDebtDisplay();
             
             // Set today's date as default
             document.getElementById('date').value = new Date().toISOString().split('T')[0];
+            document.getElementById('debtDate').value = new Date().toISOString().split('T')[0];
             
             // Event Listeners
             transactionForm.addEventListener('submit', addTransaction);
@@ -988,11 +1281,18 @@
             closeBudgetModal.addEventListener('click', () => budgetModal.classList.remove('active'));
             cancelBudget.addEventListener('click', () => budgetModal.classList.remove('active'));
             saveBudgetBtn.addEventListener('click', setBudget);
-            syncBtn.addEventListener('click', showSyncMessage);
+            syncBtn.addEventListener('click', () => showNotification('Cloud sync coming in the next update!'));
             resetBtn.addEventListener('click', () => resetModal.classList.add('active'));
             closeResetModal.addEventListener('click', () => resetModal.classList.remove('active'));
             cancelReset.addEventListener('click', () => resetModal.classList.remove('active'));
             confirmReset.addEventListener('click', resetAllData);
+            smsImportBtn.addEventListener('click', () => showNotification('SMS Import feature coming in the next update!'));
+            addDebtBtn.addEventListener('click', () => debtModal.classList.add('active'));
+            closeDebtModal.addEventListener('click', () => debtModal.classList.remove('active'));
+            cancelDebt.addEventListener('click', () => debtModal.classList.remove('active'));
+            saveDebt.addEventListener('click', addDebt);
+            googleSyncBtn.addEventListener('click', () => showNotification('Google Drive sync coming in the next update!'));
+            smsBackupBtn.addEventListener('click', () => showNotification('SMS Backup feature coming in the next update!'));
             
             // Initialize charts with empty data
             function initCharts() {
@@ -1129,6 +1429,66 @@
                 showNotification('Transaction added successfully!');
             }
             
+            // Add new debt record
+            function addDebt() {
+                const type = document.getElementById('debtType').value;
+                const amount = parseFloat(document.getElementById('debtAmount').value);
+                const person = document.getElementById('debtPerson').value;
+                const description = document.getElementById('debtDescription').value;
+                const date = document.getElementById('debtDate').value || new Date().toISOString().split('T')[0];
+                
+                if (!amount || amount <= 0) {
+                    showNotification('Please enter a valid amount', 'error');
+                    return;
+                }
+                
+                if (!person) {
+                    showNotification('Please enter a person or business name', 'error');
+                    return;
+                }
+                
+                const debt = {
+                    id: Date.now(),
+                    type,
+                    amount,
+                    person,
+                    description: description || 'Debt Record',
+                    date
+                };
+                
+                if (type === 'owedToMe') {
+                    debts.owedToMe.push(debt);
+                } else {
+                    debts.owedToOthers.push(debt);
+                }
+                
+                saveDebts();
+                updateDebtDisplay();
+                debtModal.classList.remove('active');
+                
+                // Reset form
+                document.getElementById('debtAmount').value = '';
+                document.getElementById('debtPerson').value = '';
+                document.getElementById('debtDescription').value = '';
+                document.getElementById('debtDate').value = new Date().toISOString().split('T')[0];
+                
+                showNotification('Debt record added successfully!');
+            }
+            
+            // Update debt display
+            function updateDebtDisplay() {
+                // Calculate totals
+                const owedToMeTotal = debts.owedToMe.reduce((sum, debt) => sum + debt.amount, 0);
+                const owedToOthersTotal = debts.owedToOthers.reduce((sum, debt) => sum + debt.amount, 0);
+                
+                // Update UI
+                owedToMeEl.textContent = owedToMeTotal.toFixed(2);
+                owedToOthersEl.textContent = owedToOthersTotal.toFixed(2);
+                
+                owedToMeCountEl.textContent = `By ${debts.owedToMe.length} ${debts.owedToMe.length === 1 ? 'person' : 'people'}`;
+                owedToOthersCountEl.textContent = `To ${debts.owedToOthers.length} ${debts.owedToOthers.length === 1 ? 'person' : 'people'}`;
+            }
+            
             // Render transactions based on filter
             function renderTransactions() {
                 if (transactions.length === 0) {
@@ -1170,17 +1530,17 @@
                     switch(transaction.category) {
                         case 'salary':
                             iconClass = 'category-income';
-                            iconBg = 'category-salary';
+                            iconBg = 'category-income';
                             iconName = 'fas fa-money-check';
                             break;
                         case 'freelance':
                             iconClass = 'category-income';
-                            iconBg = 'category-other';
+                            iconBg = 'category-income';
                             iconName = 'fas fa-laptop';
                             break;
                         case 'investment':
                             iconClass = 'category-income';
-                            iconBg = 'category-other';
+                            iconBg = 'category-income';
                             iconName = 'fas fa-chart-line';
                             break;
                         case 'food':
@@ -1452,22 +1812,23 @@
             function resetAllData() {
                 transactions = [];
                 budget = { total: 0, used: 0 };
+                debts = {
+                    owedToMe: [],
+                    owedToOthers: []
+                };
                 
                 localStorage.removeItem('transactions');
                 localStorage.removeItem('budget');
+                localStorage.removeItem('debts');
                 
                 updateBalances();
                 updateBudgetDisplay();
                 renderTransactions();
                 updateCharts();
+                updateDebtDisplay();
                 
                 resetModal.classList.remove('active');
                 showNotification('All data has been reset!');
-            }
-            
-            // Show sync message
-            function showSyncMessage() {
-                showNotification('Sync feature coming in the next update!');
             }
             
             // Show notification
@@ -1493,10 +1854,15 @@
             
             function saveData() {
                 localStorage.setItem('transactions', JSON.stringify(transactions));
+                localStorage.setItem('budget', JSON.stringify(budget));
             }
             
             function saveBudget() {
                 localStorage.setItem('budget', JSON.stringify(budget));
+            }
+            
+            function saveDebts() {
+                localStorage.setItem('debts', JSON.stringify(debts));
             }
         });
     </script>

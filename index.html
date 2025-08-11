@@ -1548,27 +1548,15 @@
     <script>
         // ==================== FIREBASE SETUP ====================
         // Replace with your Firebase config
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyBaGyplhRoKaOmYQ_Db1mtFQ2qhFBT7tGE",
-  authDomain: "fintrack-ng.firebaseapp.com",
-  projectId: "fintrack-ng",
-  storageBucket: "fintrack-ng.firebasestorage.app",
-  messagingSenderId: "847499540611",
-  appId: "1:847499540611:web:ff95ad23e8ba010f2043b6",
-  measurementId: "G-CHBMPK3XZ9"
-};
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+        const firebaseConfig = {
+          apiKey: "AIzaSyBaGyplhRoKaOmYQ_Db1mtFQ2qhFBT7tGE",
+          authDomain: "fintrack-ng.firebaseapp.com",
+          projectId: "fintrack-ng",
+          storageBucket: "fintrack-ng.firebasestorage.app",
+          messagingSenderId: "847499540611",
+          appId: "1:847499540611:web:ff95ad23e8ba010f2043b6",
+          measurementId: "G-CHBMPK3XZ9"
+        };
 
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);

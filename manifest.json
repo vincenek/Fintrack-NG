@@ -2,7 +2,7 @@
   "name": "FinTrack NG",
   "short_name": "FinTrack",
   "description": "Complete Finance Tracker for Nigerian Users",
-  "start_url": "/",
+  "start_url": "https://vincenek.github.io/Fintrack-NG/",
   "display": "standalone",
   "background_color": "#f0f9ff",
   "theme_color": "#2563eb",

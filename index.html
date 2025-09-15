@@ -989,7 +989,7 @@
         .debt-progress {
             height: 5px;
             background: #e2e8f0;
-            border-radius: 3px;
+            borderRadius: 3px;
             overflow: hidden;
             margin: 8px 0;
         }
@@ -1648,16 +1648,22 @@
                     // Signed up
                     const user = userCredential.user;
                     
-                    // Save user data to Firestore
+                    // Save user data to Firestore in the "users" collection
                     return db.collection('users').doc(user.uid).set({
                         name: name,
                         email: email,
-                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                        transactions: [],
+                        budget: { total: 0 },
+                        debts: {
+                            owedToMe: [],
+                            owedToOthers: []
+                        }
                     });
                 })
                 .then(() => {
-                    // Initialize user data
-                    initializeUserData(auth.currentUser.uid);
+                    // Load user data after initialization
+                    loadUserData(auth.currentUser.uid);
                 })
                 .catch((error) => {
                     showAuthError(error.message);
@@ -1687,35 +1693,9 @@
         });
         
         // ==================== USER DATA FUNCTIONS ====================
-        // Initialize user data
-        function initializeUserData(userId) {
-            const userData = {
-                transactions: [],
-                budget: { total: 0 },
-                debts: {
-                    owedToMe: [],
-                    owedToOthers: []
-                }
-            };
-            
-            db.collection('userData').doc(userId).set(userData)
-                .then(() => {
-                    // Data initialized
-                    updateBalances();
-                    updateBudgetDisplay();
-                    renderTransactions();
-                    updateDebtDisplay();
-                    renderDebtList();
-                    updateCharts();
-                })
-                .catch((error) => {
-                    console.error("Error initializing user data:", error);
-                });
-        }
-        
         // Load user data from Firestore
         function loadUserData(userId) {
-            db.collection('userData').doc(userId).get()
+            db.collection('users').doc(userId).get()
                 .then((doc) => {
                     if (doc.exists) {
                         const userData = doc.data();
@@ -1735,7 +1715,20 @@
                         updateCharts();
                     } else {
                         // Initialize data for new user
-                        initializeUserData(userId);
+                        const user = auth.currentUser;
+                        if (user) {
+                            db.collection('users').doc(userId).set({
+                                name: user.displayName || "User",
+                                email: user.email,
+                                createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                                transactions: [],
+                                budget: { total: 0 },
+                                debts: {
+                                    owedToMe: [],
+                                    owedToOthers: []
+                                }
+                            });
+                        }
                     }
                 })
                 .catch((error) => {
@@ -1751,10 +1744,12 @@
             const userData = {
                 transactions: transactions,
                 budget: budget,
-                debts: debts
+                debts: debts,
+                lastUpdated: firebase.firestore.FieldValue.serverTimestamp()
             };
             
-            db.collection('userData').doc(userId).set(userData)
+            // Save to the "users" collection with the user's UID as document ID
+            db.collection('users').doc(userId).set(userData, { merge: true })
                 .catch((error) => {
                     console.error("Error saving user data:", error);
                 });

@@ -17,6 +17,10 @@
     <!-- Web App Manifest -->
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#2563eb">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="FinTrack NG">
+    <link rel="apple-touch-icon" href="icons/icon-192x192.png">
         
     <style>
         :root {
@@ -2067,6 +2071,186 @@
             margin-top: 20px;
         }
 
+        /* Advanced AI Insights Styling */
+        .ai-insights-advanced {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            border-radius: var(--border-radius);
+            padding: 15px;
+            margin-top: 15px;
+            border-left: 4px solid #0ea5e9;
+            overflow: hidden;
+            transition: var(--transition);
+            max-height: 500px;
+        }
+
+        [data-theme="dark"] .ai-insights-advanced {
+            background: linear-gradient(135deg, #1e3a5f 0%, #0f172a 100%);
+        }
+
+        .ai-insights-advanced.collapsed {
+            max-height: 60px;
+        }
+
+        .ai-insight-category {
+            margin-bottom: 15px;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 8px;
+            transition: var(--transition);
+        }
+
+        [data-theme="dark"] .ai-insight-category {
+            background: rgba(30, 41, 59, 0.7);
+        }
+
+        .ai-insights-advanced.collapsed .ai-insight-category {
+            display: none;
+        }
+
+        .ai-insight-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .ai-insight-icon {
+            width: 24px;
+            height: 24px;
+            background: #0ea5e9;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.8rem;
+        }
+
+        .ai-insight-title {
+            font-weight: 600;
+            color: #0ea5e9;
+        }
+
+        .ai-insight-content {
+            font-size: 0.85rem;
+            line-height: 1.4;
+        }
+
+        .ai-insight-metric {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 5px;
+            font-size: 0.8rem;
+        }
+
+        .ai-insight-progress {
+            height: 4px;
+            background: #e2e8f0;
+            border-radius: 2px;
+            overflow: hidden;
+            margin: 5px 0;
+        }
+
+        .ai-insight-progress-fill {
+            height: 100%;
+            background: #0ea5e9;
+            border-radius: 2px;
+        }
+
+        .ai-prediction {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 10px;
+            border-radius: 4px;
+            margin-top: 10px;
+            font-size: 0.85rem;
+        }
+
+        [data-theme="dark"] .ai-prediction {
+            background: #451a03;
+        }
+
+        .ai-alert {
+            background: #fee2e2;
+            border-left: 4px solid #ef4444;
+            padding: 10px;
+            border-radius: 4px;
+            margin-top: 10px;
+            font-size: 0.85rem;
+        }
+
+        [data-theme="dark"] .ai-alert {
+            background: #7f1d1d;
+        }
+
+        .ai-tip {
+            background: #f0fdf4;
+            border-left: 4px solid #10b981;
+            padding: 10px;
+            border-radius: 4px;
+            margin-top: 10px;
+            font-size: 0.85rem;
+        }
+
+        [data-theme="dark"] .ai-tip {
+            background: #1a2e22;
+        }
+
+        /* Toggle Button for Advanced AI Insights */
+        .ai-toggle-btn {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 5px 0;
+            color: #0ea5e9;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .ai-toggle-btn i {
+            transition: transform 0.3s ease;
+        }
+
+        .ai-toggle-btn.collapsed i {
+            transform: rotate(180deg);
+        }
+
+        /* NEW: Make AI insights content scrollable */
+        .ai-insights-content {
+            transition: max-height 0.3s ease;
+            overflow: hidden;
+            max-height: 0;
+        }
+
+        .ai-insights-advanced:not(.collapsed) .ai-insights-content {
+            max-height: 300px;
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+
+        /* Style the scrollbar for webkit browsers */
+        .ai-insights-content::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        .ai-insights-content::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        .ai-insights-content::-webkit-scrollbar-thumb {
+            background: #c1c1c1;
+            border-radius: 10px;
+        }
+
+        .ai-insights-content::-webkit-scrollbar-thumb:hover {
+            background: #a8a8a8;
+        }
+
         @media (min-width: 576px) {
             body {
                 padding: 20px;
@@ -2427,8 +2611,6 @@
                                         <option value="housing">Housing</option>
                                         <option value="entertainment">Entertainment</option>
                                         <option value="data">Data</option>
-                                        <option value="transport">Transport</option>
-                                        <option value="food">Food</option>
                                         <option value="nepa">NEPA Bill</option>
                                         <option value="pos">POS/Bank Charges</option>
                                         <option value="family">Family Support</option>
@@ -2451,6 +2633,30 @@
                                     <i class="fas fa-check-circle"></i> Add Transaction
                                 </button>
                             </form>
+                        </div>
+                        
+                        <!-- Advanced AI Insights -->
+                        <div class="ai-insights-advanced collapsed" id="advancedAIInsights">
+                            <button class="ai-toggle-btn collapsed" id="aiToggleBtn">
+                                <span><i class="fas fa-robot"></i> Advanced AI Financial Insights</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </button>
+                            <div class="ai-insights-content" id="advancedAIRecommendations">
+                                <div class="ai-insight-category">
+                                    <div class="ai-insight-header">
+                                        <div class="ai-insight-icon">
+                                            <i class="fas fa-robot"></i>
+                                        </div>
+                                        <div class="ai-insight-title">Welcome to FinTrack AI</div>
+                                    </div>
+                                    <div class="ai-insight-content">
+                                        <p>Start adding transactions to unlock personalized financial insights tailored to your spending patterns.</p>
+                                        <div class="ai-tip">
+                                            <strong>Tip:</strong> Track all your expenses for 30 days to get the most accurate financial analysis.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         
                         <!-- Charts -->
@@ -2676,6 +2882,30 @@
                             </div>
                         </div>
                         
+                        <!-- Advanced AI Insights -->
+                        <div class="ai-insights-advanced collapsed" id="advancedAIInsightsTab">
+                            <button class="ai-toggle-btn collapsed" id="aiToggleBtnTab">
+                                <span><i class="fas fa-robot"></i> Advanced AI Financial Insights</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </button>
+                            <div class="ai-insights-content" id="advancedAIRecommendationsTab">
+                                <div class="ai-insight-category">
+                                    <div class="ai-insight-header">
+                                        <div class="ai-insight-icon">
+                                            <i class="fas fa-robot"></i>
+                                        </div>
+                                        <div class="ai-insight-title">Welcome to FinTrack AI</div>
+                                    </div>
+                                    <div class="ai-insight-content">
+                                        <p>Start adding transactions to unlock personalized financial insights tailored to your spending patterns.</p>
+                                        <div class="ai-tip">
+                                            <strong>Tip:</strong> Track all your expenses for 30 days to get the most accurate financial analysis.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
                         <!-- AI Insights -->
                         <div class="ai-insights">
                             <div class="ai-title">
@@ -2739,8 +2969,6 @@
                                         <option value="housing">Housing</option>
                                         <option value="entertainment">Entertainment</option>
                                         <option value="data">Data</option>
-                                        <option value="transport">Transport</option>
-                                        <option value="food">Food</option>
                                         <option value="nepa">NEPA Bill</option>
                                         <option value="pos">POS/Bank Charges</option>
                                         <option value="family">Family Support</option>
@@ -3461,7 +3689,6 @@
 
     <script>
         // ==================== FIREBASE SETUP ====================
-        // Replace with your Firebase config
         const firebaseConfig = {
           apiKey: "AIzaSyBaGyplhRoKaOmYQ_Db1mtFQ2qhFBT7tGE",
           authDomain: "fintrack-ng.firebaseapp.com",
@@ -3483,15 +3710,18 @@
         let customCategories = [];
         let nigerianCategoriesAdded = false;
         
-        // NEW: Category budgets - now supports custom category names
+        // Category budgets
         let categoryBudgets = {};
         
-        // NEW: First-time user tour
+        // First-time user tour
         let currentTourStep = 1;
         const totalTourSteps = 5;
         
-        // NEW: Layout selection
+        // Layout selection
         let selectedLayout = null;
+        
+        // AI Insights toggle state
+        let aiInsightsCollapsed = true;
         
         // Initialize settings from localStorage
         function initializeSettings() {
@@ -3501,16 +3731,14 @@
             document.getElementById('themeToggle').checked = savedTheme === 'dark';
             document.getElementById('themeToggleTab').checked = savedTheme === 'dark';
             
-            // Layout - Check if user has already made a choice
+            // Layout
             const hasChosenLayout = localStorage.getItem('hasChosenLayout') === 'true';
             
             if (!hasChosenLayout) {
-                // Show layout selection modal for first-time users
                 setTimeout(() => {
                     document.getElementById('layoutSelectionModal').classList.add('active');
                 }, 500);
             } else {
-                // Use saved layout preference
                 const savedLayout = localStorage.getItem('layoutMode') || 'scroll';
                 applyLayout(savedLayout);
             }
@@ -3536,7 +3764,7 @@
                 updateCategorySelects();
             }
             
-            // Category Budgets - Initialize as empty
+            // Category Budgets
             const savedCategoryBudgets = localStorage.getItem('categoryBudgets');
             if (savedCategoryBudgets) {
                 categoryBudgets = JSON.parse(savedCategoryBudgets);
@@ -3544,9 +3772,15 @@
                 categoryBudgets = {};
             }
             
-            // First-time user tour - MODIFIED: Don't show automatically
+            // First-time user tour
             const hasSeenTour = localStorage.getItem('hasSeenTour') === 'true';
-            // We'll not show the tour automatically anymore
+            
+            // AI Insights toggle state
+            const savedAIInsightsState = localStorage.getItem('aiInsightsCollapsed');
+            if (savedAIInsightsState !== null) {
+                aiInsightsCollapsed = savedAIInsightsState === 'true';
+                updateAIInsightsToggle();
+            }
         }
         
         // Apply layout based on user selection
@@ -3554,7 +3788,6 @@
             if (layout === 'tab') {
                 document.getElementById('scroll-layout').style.display = 'none';
                 document.getElementById('tab-layout').classList.add('active');
-                // Show reset button, hide settings button in header
                 document.getElementById('settingsBtn').style.display = 'none';
                 document.getElementById('resetBtnHeader').style.display = 'flex';
                 document.getElementById('layoutToggle').checked = true;
@@ -3562,7 +3795,6 @@
             } else {
                 document.getElementById('scroll-layout').style.display = 'block';
                 document.getElementById('tab-layout').classList.remove('active');
-                // Show settings button, hide reset button in header
                 document.getElementById('settingsBtn').style.display = 'flex';
                 document.getElementById('resetBtnHeader').style.display = 'none';
                 document.getElementById('layoutToggle').checked = false;
@@ -3579,8 +3811,6 @@
             
             const categories = [
                 { value: 'data', text: 'Data' },
-                { value: 'transport', text: 'Transport' },
-                { value: 'food', text: 'Food' },
                 { value: 'nepa', text: 'NEPA Bill' },
                 { value: 'pos', text: 'POS/Bank Charges' },
                 { value: 'family', text: 'Family Support' },
@@ -3594,7 +3824,6 @@
             
             selects.forEach(select => {
                 if (select) {
-                    // Remove existing Nigerian categories to avoid duplicates
                     categories.forEach(cat => {
                         const existingOption = Array.from(select.options).find(opt => opt.value === cat.value);
                         if (existingOption) {
@@ -3602,7 +3831,6 @@
                         }
                     });
                     
-                    // Add Nigerian categories after the default ones
                     const otherOption = Array.from(select.options).find(opt => opt.value === 'other');
                     if (otherOption) {
                         categories.forEach(cat => {
@@ -3628,7 +3856,6 @@
             
             selects.forEach(select => {
                 if (select) {
-                    // Remove existing custom categories to avoid duplicates
                     customCategories.forEach(cat => {
                         const existingOption = Array.from(select.options).find(opt => opt.value === cat.value);
                         if (existingOption) {
@@ -3636,7 +3863,6 @@
                         }
                     });
                     
-                    // Add custom categories
                     const otherOption = Array.from(select.options).find(opt => opt.value === 'other');
                     if (otherOption) {
                         customCategories.forEach(cat => {
@@ -3666,7 +3892,6 @@
             e.preventDefault();
             deferredPrompt = e;
             
-            // Show install button if not already installed
             if (!localStorage.getItem('pwaInstalled')) {
                 document.getElementById('installBtn').style.display = 'block';
                 document.getElementById('installBtnTab').style.display = 'block';
@@ -3679,7 +3904,6 @@
                 
                 deferredPrompt.userChoice.then((choiceResult) => {
                     if (choiceResult.outcome === 'accepted') {
-                        console.log('User accepted the install prompt');
                         localStorage.setItem('pwaInstalled', 'true');
                         document.getElementById('installBtn').textContent = 'App Installed ✅';
                         document.getElementById('installBtnTab').textContent = 'App Installed ✅';
@@ -3688,7 +3912,6 @@
                         document.getElementById('installInstructions').style.display = 'none';
                         document.getElementById('installInstructionsTab').style.display = 'none';
                     } else {
-                        // Show installation instructions
                         document.getElementById('installInstructions').style.display = 'block';
                         document.getElementById('installInstructionsTab').style.display = 'block';
                     }
@@ -3696,7 +3919,6 @@
                     deferredPrompt = null;
                 });
             } else {
-                // Show installation instructions
                 document.getElementById('installInstructions').style.display = 'block';
                 document.getElementById('installInstructionsTab').style.display = 'block';
             }
@@ -3710,15 +3932,12 @@
                 item.addEventListener('click', () => {
                     const tabId = item.getAttribute('data-tab');
                     
-                    // Remove active class from all tabs and panes
                     tabItems.forEach(tab => tab.classList.remove('active'));
                     document.querySelectorAll('.tab-pane').forEach(pane => pane.classList.remove('active'));
                     
-                    // Add active class to clicked tab and corresponding pane
                     item.classList.add('active');
                     document.getElementById(tabId).classList.add('active');
                     
-                    // Ensure data is loaded for the active tab
                     if (tabId === 'transactions-tab') {
                         renderTransactionsTab();
                     } else if (tabId === 'debts-tab') {
@@ -3731,7 +3950,7 @@
             });
         }
         
-        // NEW: First-time user tour functions
+        // First-time user tour functions
         function nextTourStep() {
             if (currentTourStep < totalTourSteps) {
                 currentTourStep++;
@@ -3742,10 +3961,8 @@
         }
         
         function updateTourDisplay() {
-            // Update progress
             document.querySelector('.tour-progress').textContent = `Step ${currentTourStep} of ${totalTourSteps}`;
             
-            // Update button text for last step
             if (currentTourStep === totalTourSteps) {
                 document.getElementById('nextTourStep').textContent = 'Finish';
             } else {
@@ -3759,7 +3976,7 @@
             showNotification('Welcome to FinTrack NG! Start by adding your first transaction.');
         }
         
-        // NEW: Category Budget functions
+        // Category Budget functions
         function openCategoryBudgetModal() {
             document.getElementById('categoryBudgetModal').classList.add('active');
             updateExistingCategoryBudgetsDisplay();
@@ -3793,7 +4010,6 @@
                     container.appendChild(budgetItem);
                 }
                 
-                // Add event listeners for edit and delete buttons
                 document.querySelectorAll('.custom-budget-edit').forEach(btn => {
                     btn.addEventListener('click', (e) => {
                         const category = e.currentTarget.dataset.category;
@@ -3855,9 +4071,8 @@
             showNotification('Category budget set successfully!');
         }
 
-        // NEW: Update budget display to show/hide based on whether a budget is set
+        // Update budget display
         function updateBudgetDisplay() {
-            // Calculate used budget based on current period
             const now = new Date();
             let used = 0;
             
@@ -3914,7 +4129,6 @@
                     break;
             }
             
-            // Update budget title based on period
             const periodTitles = {
                 'daily': 'Daily Budget',
                 'weekly': 'Weekly Budget',
@@ -3925,15 +4139,12 @@
             budgetTitle.textContent = periodTitles[budget.period] || 'Budget';
             budgetTitleTab.textContent = periodTitles[budget.period] || 'Budget';
             
-            // Check if budget is set
             if (budget.total > 0) {
-                // Show budget details and hide no budget state
                 document.getElementById('noBudgetState').style.display = 'none';
                 document.getElementById('budgetDetails').style.display = 'block';
                 document.getElementById('noBudgetStateTab').style.display = 'none';
                 document.getElementById('budgetDetailsTab').style.display = 'block';
                 
-                // Update budget values
                 totalBudgetEl.textContent = `₦${formatNumberWithCommas(budget.total)}`;
                 totalBudgetTabEl.textContent = `₦${formatNumberWithCommas(budget.total)}`;
                 usedBudgetEl.textContent = `₦${formatNumberWithCommas(used)}`;
@@ -3947,7 +4158,6 @@
                 budgetProgressEl.style.width = `${Math.min(percentage, 100)}%`;
                 budgetProgressTabEl.style.width = `${Math.min(percentage, 100)}%`;
                 
-                // Change progress color based on usage
                 if (percentage > 90) {
                     budgetProgressEl.style.background = 'var(--danger)';
                     budgetProgressTabEl.style.background = 'var(--danger)';
@@ -3959,7 +4169,6 @@
                     budgetProgressTabEl.style.background = 'var(--success)';
                 }
                 
-                // Calculate days left in current period
                 let days = 0;
                 switch(budget.period) {
                     case 'daily':
@@ -3983,10 +4192,8 @@
                 daysLeftEl.textContent = `${days} ${days === 1 ? 'day' : 'days'}`;
                 daysLeftTabEl.textContent = `${days} ${days === 1 ? 'day' : 'days'}`;
                 
-                // Update smart budget breakdown
                 updateSmartBudgetBreakdown();
             } else {
-                // Show no budget state and hide budget details
                 document.getElementById('noBudgetState').style.display = 'block';
                 document.getElementById('budgetDetails').style.display = 'none';
                 document.getElementById('noBudgetStateTab').style.display = 'block';
@@ -3994,8 +4201,657 @@
             }
         }
         
+        // ==================== AI INSIGHTS TOGGLE FUNCTIONALITY ====================
+        
+        // Toggle AI Insights visibility
+        function toggleAIInsights() {
+            aiInsightsCollapsed = !aiInsightsCollapsed;
+            updateAIInsightsToggle();
+            localStorage.setItem('aiInsightsCollapsed', aiInsightsCollapsed);
+        }
+        
+        // Update AI Insights toggle state
+        function updateAIInsightsToggle() {
+            const aiInsightsElements = [
+                document.getElementById('advancedAIInsights'),
+                document.getElementById('advancedAIInsightsTab')
+            ];
+            
+            const toggleButtons = [
+                document.getElementById('aiToggleBtn'),
+                document.getElementById('aiToggleBtnTab')
+            ];
+            
+            aiInsightsElements.forEach(el => {
+                if (el) {
+                    if (aiInsightsCollapsed) {
+                        el.classList.add('collapsed');
+                    } else {
+                        el.classList.remove('collapsed');
+                    }
+                }
+            });
+            
+            toggleButtons.forEach(btn => {
+                if (btn) {
+                    if (aiInsightsCollapsed) {
+                        btn.classList.add('collapsed');
+                    } else {
+                        btn.classList.remove('collapsed');
+                    }
+                }
+            });
+        }
+        
+        // ==================== DRAMATICALLY IMPROVED AI INSIGHTS ====================
+        
+        // Advanced AI Insights function with sophisticated analysis
+        function updateAdvancedAIInsights() {
+            const advancedAIRecommendations = document.getElementById('advancedAIRecommendations');
+            const advancedAIRecommendationsTab = document.getElementById('advancedAIRecommendationsTab');
+            
+            if (transactions.length === 0) {
+                advancedAIRecommendations.innerHTML = `
+                    <div class="ai-insight-category">
+                        <div class="ai-insight-header">
+                            <div class="ai-insight-icon">
+                                <i class="fas fa-robot"></i>
+                            </div>
+                            <div class="ai-insight-title">Welcome to FinTrack AI</div>
+                        </div>
+                        <div class="ai-insight-content">
+                            <p>Start adding transactions to unlock personalized financial insights tailored to your spending patterns.</p>
+                            <div class="ai-tip">
+                                <strong>Tip:</strong> Track all your expenses for 30 days to get the most accurate financial analysis.
+                            </div>
+                        </div>
+                    </div>
+                `;
+                advancedAIRecommendationsTab.innerHTML = advancedAIRecommendations.innerHTML;
+                return;
+            }
+            
+            const now = new Date();
+            const oneWeekAgo = new Date(now);
+            oneWeekAgo.setDate(now.getDate() - 7);
+            
+            const oneMonthAgo = new Date(now);
+            oneMonthAgo.setMonth(now.getMonth() - 1);
+            
+            const threeMonthsAgo = new Date(now);
+            threeMonthsAgo.setMonth(now.getMonth() - 3);
+            
+            // Calculate comprehensive metrics
+            const thisWeekExpenses = transactions.filter(t => 
+                t.type === 'expense' && new Date(t.date) >= oneWeekAgo
+            );
+            
+            const thisMonthExpenses = transactions.filter(t => 
+                t.type === 'expense' && new Date(t.date) >= oneMonthAgo
+            );
+            
+            const thisMonthIncome = transactions.filter(t => 
+                t.type === 'income' && new Date(t.date) >= oneMonthAgo
+            );
+            
+            const threeMonthExpenses = transactions.filter(t => 
+                t.type === 'expense' && new Date(t.date) >= threeMonthsAgo
+            );
+            
+            const threeMonthIncome = transactions.filter(t => 
+                t.type === 'income' && new Date(t.date) >= threeMonthsAgo
+            );
+            
+            // Calculate totals
+            const totalThisWeek = thisWeekExpenses.reduce((sum, t) => sum + t.amount, 0);
+            const totalThisMonth = thisMonthExpenses.reduce((sum, t) => sum + t.amount, 0);
+            const totalIncomeThisMonth = thisMonthIncome.reduce((sum, t) => sum + t.amount, 0);
+            const avgThreeMonthExpenses = threeMonthExpenses.reduce((sum, t) => sum + t.amount, 0) / 3;
+            const avgThreeMonthIncome = threeMonthIncome.reduce((sum, t) => sum + t.amount, 0) / 3;
+            
+            // Category analysis
+            const categorySpending = {};
+            const categorySpendingThisMonth = {};
+            const categoryFrequency = {};
+            
+            thisMonthExpenses.forEach(t => {
+                categorySpendingThisMonth[t.category] = (categorySpendingThisMonth[t.category] || 0) + t.amount;
+                categoryFrequency[t.category] = (categoryFrequency[t.category] || 0) + 1;
+            });
+            
+            threeMonthExpenses.forEach(t => {
+                categorySpending[t.category] = (categorySpending[t.category] || 0) + t.amount;
+            });
+            
+            // Find top spending categories
+            let highestCategory = '';
+            let highestAmount = 0;
+            let highestFrequencyCategory = '';
+            let highestFrequency = 0;
+            
+            for (const category in categorySpendingThisMonth) {
+                if (categorySpendingThisMonth[category] > highestAmount) {
+                    highestAmount = categorySpendingThisMonth[category];
+                    highestCategory = category;
+                }
+                
+                if (categoryFrequency[category] > highestFrequency) {
+                    highestFrequency = categoryFrequency[category];
+                    highestFrequencyCategory = category;
+                }
+            }
+            
+            // Savings rate calculation
+            const savingsRate = totalIncomeThisMonth > 0 ? 
+                ((totalIncomeThisMonth - totalThisMonth) / totalIncomeThisMonth * 100).toFixed(1) : 0;
+            
+            // Budget analysis
+            let budgetUsedPercentage = 0;
+            if (budget.total > 0) {
+                budgetUsedPercentage = (totalThisMonth / budget.total * 100);
+            }
+            
+            // Spending trends
+            const dailyAverageThisMonth = totalThisMonth / 30;
+            const weeklyAverageThisMonth = totalThisMonth / 4.3;
+            
+            // Compare with previous period
+            const lastMonth = new Date(now);
+            lastMonth.setMonth(now.getMonth() - 1);
+            const lastMonthStart = new Date(lastMonth.getFullYear(), lastMonth.getMonth(), 1);
+            const lastMonthEnd = new Date(lastMonth.getFullYear(), lastMonth.getMonth() + 1, 0);
+            
+            const lastMonthExpenses = transactions.filter(t => {
+                const tDate = new Date(t.date);
+                return t.type === 'expense' && tDate >= lastMonthStart && tDate <= lastMonthEnd;
+            });
+            
+            const lastMonthTotal = lastMonthExpenses.reduce((sum, t) => sum + t.amount, 0);
+            const monthlyChange = lastMonthTotal > 0 ? ((totalThisMonth - lastMonthTotal) / lastMonthTotal * 100).toFixed(1) : 0;
+            
+            // Generate sophisticated insights
+            const insights = [];
+            
+            // 1. Financial Health Assessment
+            let financialHealthScore = 0;
+            let healthMessage = '';
+            
+            if (savingsRate >= 20) {
+                financialHealthScore = 90;
+                healthMessage = "Excellent financial health! You're saving a significant portion of your income.";
+            } else if (savingsRate >= 10) {
+                financialHealthScore = 75;
+                healthMessage = "Good financial health. You're building savings consistently.";
+            } else if (savingsRate >= 0) {
+                financialHealthScore = 60;
+                healthMessage = "Fair financial health. Consider increasing your savings rate.";
+            } else {
+                financialHealthScore = 40;
+                healthMessage = "Needs attention. You're spending more than you earn.";
+            }
+            
+            // Adjust score based on budget adherence
+            if (budget.total > 0) {
+                if (budgetUsedPercentage <= 80) {
+                    financialHealthScore += 10;
+                } else if (budgetUsedPercentage > 100) {
+                    financialHealthScore -= 15;
+                }
+            }
+            
+            // Adjust score based on debt
+            const totalDebt = parseFloat(document.getElementById('owedToOthers').textContent) || 0;
+            if (totalDebt > 0 && totalIncomeThisMonth > 0) {
+                const debtToIncomeRatio = (totalDebt / totalIncomeThisMonth) * 100;
+                if (debtToIncomeRatio > 40) {
+                    financialHealthScore -= 20;
+                    healthMessage += " High debt levels are impacting your financial health.";
+                } else if (debtToIncomeRatio > 20) {
+                    financialHealthScore -= 10;
+                    healthMessage += " Consider reducing your debt burden.";
+                }
+            }
+            
+            financialHealthScore = Math.max(0, Math.min(100, financialHealthScore));
+            
+            insights.push({
+                type: 'assessment',
+                title: 'Financial Health Score',
+                score: financialHealthScore,
+                message: healthMessage,
+                details: `Savings Rate: ${savingsRate}% | Budget Adherence: ${budget.total > 0 ? budgetUsedPercentage.toFixed(1) + '%' : 'Not set'}`
+            });
+            
+            // 2. Spending Pattern Analysis
+            if (highestCategory) {
+                const categoryPercentage = (highestAmount / totalThisMonth * 100).toFixed(1);
+                let patternMessage = '';
+                
+                if (categoryPercentage > 40) {
+                    patternMessage = `Your spending is heavily concentrated on ${formatCategory(highestCategory)}. Consider diversifying your expenses.`;
+                } else if (categoryPercentage > 25) {
+                    patternMessage = `${formatCategory(highestCategory)} is your largest expense category. Monitor this closely.`;
+                } else {
+                    patternMessage = `Your spending is well-distributed across categories. ${formatCategory(highestCategory)} is your largest expense.`;
+                }
+                
+                // Add frequency analysis
+                if (highestFrequencyCategory === highestCategory && highestFrequency > 10) {
+                    patternMessage += ` You make frequent purchases in this category (${highestFrequency} times this month).`;
+                }
+                
+                insights.push({
+                    type: 'pattern',
+                    title: 'Spending Pattern',
+                    message: patternMessage,
+                    details: `${formatCategory(highestCategory)}: ₦${formatNumberWithCommas(highestAmount)} (${categoryPercentage}% of monthly expenses)`
+                });
+            }
+            
+            // 3. Budget Performance
+            if (budget.total > 0) {
+                let budgetMessage = '';
+                
+                if (budgetUsedPercentage <= 70) {
+                    budgetMessage = "You're well under budget this month. Great job managing your expenses!";
+                } else if (budgetUsedPercentage <= 90) {
+                    budgetMessage = "You're on track with your budget. Continue monitoring your spending.";
+                } else if (budgetUsedPercentage <= 100) {
+                    budgetMessage = "You're approaching your budget limit. Consider reducing non-essential spending.";
+                } else {
+                    const overspendAmount = totalThisMonth - budget.total;
+                    budgetMessage = `You've exceeded your budget by ₦${formatNumberWithCommas(overspendAmount)}. Review your expenses carefully.`;
+                }
+                
+                insights.push({
+                    type: 'budget',
+                    title: 'Budget Performance',
+                    message: budgetMessage,
+                    details: `Used: ${budgetUsedPercentage.toFixed(1)}% of ₦${formatNumberWithCommas(budget.total)} budget`
+                });
+            }
+            
+            // 4. Savings Opportunity Analysis
+            if (savingsRate < 15 && totalIncomeThisMonth > 0) {
+                const potentialSavings = totalIncomeThisMonth * 0.15 - (totalIncomeThisMonth - totalThisMonth);
+                
+                if (potentialSavings > 0) {
+                    insights.push({
+                        type: 'savings',
+                        title: 'Savings Opportunity',
+                        message: `You could save an additional ₦${formatNumberWithCommas(potentialSavings)} per month by reaching a 15% savings rate.`,
+                        details: `Current savings rate: ${savingsRate}% | Target: 15%`
+                    });
+                }
+            }
+            
+            // 5. Weekly Spending Analysis
+            if (totalThisWeek > 0) {
+                const avgDailyThisWeek = totalThisWeek / 7;
+                let weeklyMessage = '';
+                
+                if (avgDailyThisWeek > dailyAverageThisMonth * 1.3) {
+                    weeklyMessage = "Your spending this week is higher than your monthly average. Consider if this is a temporary spike or a new trend.";
+                } else if (avgDailyThisWeek < dailyAverageThisMonth * 0.7) {
+                    weeklyMessage = "You're spending less than usual this week. Great job controlling your expenses!";
+                } else {
+                    weeklyMessage = "Your weekly spending is consistent with your monthly average.";
+                }
+                
+                insights.push({
+                    type: 'weekly',
+                    title: 'Weekly Spending',
+                    message: weeklyMessage,
+                    details: `This week: ₦${formatNumberWithCommas(totalThisWeek)} | Daily avg: ₦${formatNumberWithCommas(avgDailyThisWeek)}`
+                });
+            }
+            
+            // 6. Monthly Trend Analysis
+            if (monthlyChange !== 0 && !isNaN(monthlyChange)) {
+                let trendMessage = '';
+                
+                if (monthlyChange > 15) {
+                    trendMessage = `Your spending increased significantly (${monthlyChange}%) compared to last month. Review what caused this change.`;
+                } else if (monthlyChange > 5) {
+                    trendMessage = `Your spending is up ${monthlyChange}% from last month. Monitor this trend.`;
+                } else if (monthlyChange < -10) {
+                    trendMessage = `Great job! You reduced your spending by ${Math.abs(monthlyChange)}% compared to last month.`;
+                } else if (monthlyChange < -5) {
+                    trendMessage = `Your spending decreased by ${Math.abs(monthlyChange)}% from last month.`;
+                } else {
+                    trendMessage = "Your spending is consistent with last month's pattern.";
+                }
+                
+                insights.push({
+                    type: 'trend',
+                    title: 'Monthly Trend',
+                    message: trendMessage,
+                    details: `This month: ₦${formatNumberWithCommas(totalThisMonth)} | Last month: ₦${formatNumberWithCommas(lastMonthTotal)}`
+                });
+            }
+            
+            // 7. Category Budget Analysis
+            const categoryBudgetInsights = [];
+            for (const [category, budgetAmount] of Object.entries(categoryBudgets)) {
+                const spent = categorySpendingThisMonth[category] || 0;
+                const percentage = (spent / budgetAmount * 100).toFixed(1);
+                
+                if (percentage > 90) {
+                    categoryBudgetInsights.push({
+                        category: formatCategory(category),
+                        percentage: percentage,
+                        overspend: spent - budgetAmount
+                    });
+                }
+            }
+            
+            if (categoryBudgetInsights.length > 0) {
+                const topOverBudget = categoryBudgetInsights[0];
+                insights.push({
+                    type: 'category-budget',
+                    title: 'Category Budget Alert',
+                    message: `You've exceeded your ${topOverBudget.category} budget by ${topOverBudget.percentage}%.`,
+                    details: `Consider adjusting your budget or reducing spending in this category.`
+                });
+            }
+            
+            // 8. Nigerian-Specific Insights
+            const nigerianInsights = [
+                {
+                    condition: categorySpendingThisMonth['data'] > 5000,
+                    message: "Your data expenses seem high. Consider switching to more cost-effective data plans or using WiFi more often."
+                },
+                {
+                    condition: categorySpendingThisMonth['transport'] > 15000,
+                    message: "Transport costs are significant. Explore carpooling or public transport options to save money."
+                },
+                {
+                    condition: categorySpendingThisMonth['pos'] > 2000,
+                    message: "POS charges are adding up. Consider making fewer, larger withdrawals to reduce bank charges."
+                },
+                {
+                    condition: totalThisMonth > 0 && (categorySpendingThisMonth['food'] / totalThisMonth) > 0.4,
+                    message: "A large portion of your budget goes to food. Consider meal planning and buying in bulk to save on groceries."
+                },
+                {
+                    condition: savingsRate < 10 && totalIncomeThisMonth > 50000,
+                    message: "With your income level, you should aim for at least 15-20% savings rate to build financial security."
+                }
+            ];
+            
+            for (const insight of nigerianInsights) {
+                if (insight.condition) {
+                    insights.push({
+                        type: 'nigerian',
+                        title: 'Local Insight',
+                        message: insight.message,
+                        details: 'Tailored for Nigerian financial context'
+                    });
+                    break;
+                }
+            }
+            
+            // 9. Predictive Insights
+            if (totalThisMonth > 0 && avgThreeMonthExpenses > 0) {
+                const projectedMonthly = totalThisMonth > avgThreeMonthExpenses ? totalThisMonth : avgThreeMonthExpenses;
+                const projectedYearly = projectedMonthly * 12;
+                const projectedSavings = (avgThreeMonthIncome - projectedMonthly) * 12;
+                
+                insights.push({
+                    type: 'prediction',
+                    title: 'Annual Projection',
+                    message: `Based on your current spending, you're on track to spend ₦${formatNumberWithCommas(projectedYearly)} this year.`,
+                    details: `Potential annual savings: ₦${formatNumberWithCommas(projectedSavings)}`
+                });
+            }
+            
+            // If we have fewer than 3 insights, add general tips
+            if (insights.length < 3) {
+                const generalTips = [
+                    "Track your small daily expenses - they often add up to significant amounts over time.",
+                    "Review your subscriptions and recurring payments monthly to identify savings opportunities.",
+                    "Set specific financial goals to stay motivated with your budgeting efforts.",
+                    "Consider using the 50/30/20 rule: 50% needs, 30% wants, 20% savings/debt repayment.",
+                    "Build an emergency fund covering 3-6 months of expenses for financial security."
+                ];
+                
+                const randomTip = generalTips[Math.floor(Math.random() * generalTips.length)];
+                insights.push({
+                    type: 'tip',
+                    title: 'Financial Tip',
+                    message: randomTip,
+                    details: 'General financial advice'
+                });
+            }
+            
+            // Render advanced insights
+            let insightsHTML = '';
+            
+            // Financial Health Score (always show first)
+            const healthInsight = insights.find(i => i.type === 'assessment') || insights[0];
+            if (healthInsight) {
+                insightsHTML += `
+                    <div class="ai-insight-category">
+                        <div class="ai-insight-header">
+                            <div class="ai-insight-icon">
+                                <i class="fas fa-heartbeat"></i>
+                            </div>
+                            <div class="ai-insight-title">${healthInsight.title}</div>
+                        </div>
+                        <div class="ai-insight-content">
+                            <p>${healthInsight.message}</p>
+                            <div class="ai-insight-metric">
+                                <span>Financial Health Score</span>
+                                <span>${healthInsight.score}/100</span>
+                            </div>
+                            <div class="ai-insight-progress">
+                                <div class="ai-insight-progress-fill" style="width: ${healthInsight.score}%"></div>
+                            </div>
+                            <div class="ai-insight-metric">
+                                <span>Details</span>
+                                <span>${healthInsight.details}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // Other insights (limit to 3 additional insights)
+            const otherInsights = insights.filter(i => i.type !== 'assessment').slice(0, 3);
+            
+            otherInsights.forEach(insight => {
+                let icon = 'fas fa-chart-line';
+                let alertClass = '';
+                
+                switch(insight.type) {
+                    case 'pattern':
+                        icon = 'fas fa-project-diagram';
+                        break;
+                    case 'budget':
+                        icon = 'fas fa-wallet';
+                        if (insight.message.includes('exceeded')) {
+                            alertClass = 'ai-alert';
+                        } else if (insight.message.includes('approaching')) {
+                            alertClass = 'ai-prediction';
+                        } else {
+                            alertClass = 'ai-tip';
+                        }
+                        break;
+                    case 'savings':
+                        icon = 'fas fa-piggy-bank';
+                        alertClass = 'ai-tip';
+                        break;
+                    case 'weekly':
+                        icon = 'fas fa-calendar-week';
+                        break;
+                    case 'trend':
+                        icon = 'fas fa-chart-bar';
+                        break;
+                    case 'category-budget':
+                        icon = 'fas fa-exclamation-triangle';
+                        alertClass = 'ai-alert';
+                        break;
+                    case 'nigerian':
+                        icon = 'fas fa-globe-africa';
+                        alertClass = 'ai-tip';
+                        break;
+                    case 'prediction':
+                        icon = 'fas fa-crystal-ball';
+                        alertClass = 'ai-prediction';
+                        break;
+                    case 'tip':
+                        icon = 'fas fa-lightbulb';
+                        alertClass = 'ai-tip';
+                        break;
+                }
+                
+                insightsHTML += `
+                    <div class="ai-insight-category">
+                        <div class="ai-insight-header">
+                            <div class="ai-insight-icon">
+                                <i class="${icon}"></i>
+                            </div>
+                            <div class="ai-insight-title">${insight.title}</div>
+                        </div>
+                        <div class="ai-insight-content">
+                            <p>${insight.message}</p>
+                            ${insight.details ? `
+                                <div class="ai-insight-metric">
+                                    <span>Details</span>
+                                    <span>${insight.details}</span>
+                                </div>
+                            ` : ''}
+                            ${alertClass ? `<div class="${alertClass}">${insight.type === 'budget' && insight.message.includes('exceeded') ? 'Budget Alert' : 'Insight'}</div>` : ''}
+                        </div>
+                    </div>
+                `;
+            });
+            
+            advancedAIRecommendations.innerHTML = insightsHTML;
+            advancedAIRecommendationsTab.innerHTML = insightsHTML;
+        }
+
+        // Update the existing AI insights function to call the advanced version
+        function updateAIInsights() {
+            updateAdvancedAIInsights();
+            
+            // Keep the original simple insights as fallback
+            const aiRecommendations = document.getElementById('aiRecommendations');
+            const aiRecommendationsTab = document.getElementById('aiRecommendationsTab');
+            
+            if (transactions.length === 0) {
+                aiRecommendations.innerHTML = `
+                    <div class="ai-recommendation">
+                        <strong>Welcome!</strong> Add your first transaction to get personalized insights.
+                    </div>
+                `;
+                aiRecommendationsTab.innerHTML = `
+                    <div class="ai-recommendation">
+                        <strong>Welcome!</strong> Add your first transaction to get personalized insights.
+                    </div>
+                `;
+                return;
+            }
+            
+            // Simple insights for the basic AI section
+            const now = new Date();
+            const oneMonthAgo = new Date(now);
+            oneMonthAgo.setMonth(now.getMonth() - 1);
+            
+            const thisMonthExpenses = transactions.filter(t => 
+                t.type === 'expense' && new Date(t.date) >= oneMonthAgo
+            );
+            
+            const thisMonthIncome = transactions.filter(t => 
+                t.type === 'income' && new Date(t.date) >= oneMonthAgo
+            );
+            
+            const totalThisMonth = thisMonthExpenses.reduce((sum, t) => sum + t.amount, 0);
+            const totalIncomeThisMonth = thisMonthIncome.reduce((sum, t) => sum + t.amount, 0);
+            
+            const categorySpending = {};
+            thisMonthExpenses.forEach(t => {
+                categorySpending[t.category] = (categorySpending[t.category] || 0) + t.amount;
+            });
+            
+            let highestCategory = '';
+            let highestAmount = 0;
+            for (const category in categorySpending) {
+                if (categorySpending[category] > highestAmount) {
+                    highestAmount = categorySpending[category];
+                    highestCategory = category;
+                }
+            }
+            
+            const savingsRate = totalIncomeThisMonth > 0 ? 
+                ((totalIncomeThisMonth - totalThisMonth) / totalIncomeThisMonth * 100).toFixed(1) : 0;
+            
+            const simpleInsights = [];
+            
+            if (highestCategory && highestAmount > 0) {
+                simpleInsights.push({
+                    type: 'info',
+                    message: `Your highest spending is on ${formatCategory(highestCategory)} (₦${formatNumberWithCommas(highestAmount)} this month).`
+                });
+            }
+            
+            if (budget.total > 0) {
+                const used = thisMonthExpenses.reduce((sum, t) => sum + t.amount, 0);
+                const percentage = (used / budget.total * 100).toFixed(1);
+                
+                if (percentage > 90) {
+                    simpleInsights.push({
+                        type: 'warning',
+                        message: `You've used ${percentage}% of your monthly budget. Consider reducing non-essential spending.`
+                    });
+                } else if (percentage > 75) {
+                    simpleInsights.push({
+                        type: 'info',
+                        message: `You've used ${percentage}% of your monthly budget. You're on track but watch your spending.`
+                    });
+                }
+            }
+            
+            if (savingsRate > 0) {
+                if (savingsRate >= 20) {
+                    simpleInsights.push({
+                        type: 'success',
+                        message: `Excellent! Your savings rate is ${savingsRate}% this month.`
+                    });
+                } else if (savingsRate >= 10) {
+                    simpleInsights.push({
+                        type: 'info',
+                        message: `Good job! Your savings rate is ${savingsRate}% this month.`
+                    });
+                } else if (savingsRate < 0) {
+                    simpleInsights.push({
+                        type: 'warning',
+                        message: `You're spending more than you earn. Consider reviewing your expenses.`
+                    });
+                }
+            }
+            
+            if (simpleInsights.length === 0) {
+                simpleInsights.push({
+                    type: 'info',
+                    message: "Track your daily expenses to identify spending patterns and save more."
+                });
+            }
+            
+            aiRecommendations.innerHTML = simpleInsights.slice(0, 2).map(insight => `
+                <div class="ai-recommendation" style="border-left: 4px solid ${
+                    insight.type === 'success' ? 'var(--success)' : 
+                    insight.type === 'warning' ? 'var(--warning)' : 
+                    insight.type === 'danger' ? 'var(--danger)' : 'var(--primary)'
+                };">
+                    <strong>${insight.type.charAt(0).toUpperCase() + insight.type.slice(1)}:</strong> ${insight.message}
+                </div>
+            `).join('');
+            
+            aiRecommendationsTab.innerHTML = aiRecommendations.innerHTML;
+        }
+        
         // ==================== AUTHENTICATION FUNCTIONS ====================
-        // DOM Elements
         const authContainer = document.getElementById('auth-container');
         const appContainer = document.getElementById('app-container');
         const loginTab = document.getElementById('login-tab');
@@ -4051,7 +4907,6 @@
             
             auth.signInWithEmailAndPassword(email, password)
                 .then((userCredential) => {
-                    // Signed in
                     loadUserData(userCredential.user.uid);
                 })
                 .catch((error) => {
@@ -4074,10 +4929,8 @@
             
             auth.createUserWithEmailAndPassword(email, password)
                 .then((userCredential) => {
-                    // Signed up
                     const user = userCredential.user;
                     
-                    // Save user data to Firestore in the "users" collection
                     return db.collection('users').doc(user.uid).set({
                         name: name,
                         email: email,
@@ -4092,7 +4945,6 @@
                     });
                 })
                 .then(() => {
-                    // Load user data after initialization
                     loadUserData(auth.currentUser.uid);
                 })
                 .catch((error) => {
@@ -4115,13 +4967,11 @@
         // Auth state observer
         auth.onAuthStateChanged((user) => {
             if (user) {
-                // User is signed in
                 authContainer.style.display = 'none';
                 appContainer.style.display = 'block';
                 loadUserData(user.uid);
                 initializeSettings();
             } else {
-                // User is signed out
                 authContainer.style.display = 'block';
                 appContainer.style.display = 'none';
             }
@@ -4142,7 +4992,6 @@
                         };
                         categoryBudgets = userData.categoryBudgets || categoryBudgets;
                         
-                        // Update UI for both layouts
                         updateBalances();
                         updateBudgetDisplay();
                         renderTransactions();
@@ -4155,7 +5004,6 @@
                         updateCategoryBudgetDisplay();
                         updateSmartBudgetMessage();
                     } else {
-                        // Initialize data for new user
                         const user = auth.currentUser;
                         if (user) {
                             db.collection('users').doc(userId).set({
@@ -4191,7 +5039,6 @@
                 lastUpdated: firebase.firestore.FieldValue.serverTimestamp()
             };
             
-            // Save to the "users" collection with the user's UID as document ID
             db.collection('users').doc(userId).set(userData, { merge: true })
                 .catch((error) => {
                     console.error("Error saving user data:", error);
@@ -4321,7 +5168,7 @@
         const colorOptions = document.querySelectorAll('.color-option');
         const installInstructions = document.getElementById('installInstructions');
         
-        // NEW: Category Budget Elements
+        // Category Budget Elements
         const setCategoryBudgetBtn = document.getElementById('setCategoryBudgetBtn');
         const setCategoryBudgetBtnTab = document.getElementById('setCategoryBudgetBtnTab');
         const categoryBudgetModal = document.getElementById('categoryBudgetModal');
@@ -4331,20 +5178,24 @@
         const categoryBudgetName = document.getElementById('categoryBudgetName');
         const categoryBudgetAmount = document.getElementById('categoryBudgetAmount');
         
-        // NEW: No Budget State Elements
+        // No Budget State Elements
         const setBudgetFromMessage = document.getElementById('setBudgetFromMessage');
         const setBudgetFromMessageTab = document.getElementById('setBudgetFromMessageTab');
         
-        // NEW: Tour Elements
+        // Tour Elements
         const welcomeTour = document.getElementById('welcomeTour');
         const nextTourStepBtn = document.getElementById('nextTourStep');
         const skipTourBtn = document.getElementById('skipTour');
         
-        // NEW: Layout Selection Elements
+        // Layout Selection Elements
         const layoutSelectionModal = document.getElementById('layoutSelectionModal');
         const scrollLayoutOption = document.getElementById('scrollLayoutOption');
         const tabLayoutOption = document.getElementById('tabLayoutOption');
         const confirmLayoutSelection = document.getElementById('confirmLayoutSelection');
+        
+        // AI Insights Toggle Elements
+        const aiToggleBtn = document.getElementById('aiToggleBtn');
+        const aiToggleBtnTab = document.getElementById('aiToggleBtnTab');
         
         // Initialize charts
         let spendingChart, incomeChart, spendingChartTab, incomeChartTab;
@@ -4442,22 +5293,22 @@
             });
         });
         
-        // NEW: Category Budgets
+        // Category Budgets
         setCategoryBudgetBtn.addEventListener('click', openCategoryBudgetModal);
         setCategoryBudgetBtnTab.addEventListener('click', openCategoryBudgetModal);
         closeCategoryBudgetModal.addEventListener('click', () => categoryBudgetModal.classList.remove('active'));
         cancelCategoryBudget.addEventListener('click', () => categoryBudgetModal.classList.remove('active'));
         saveCategoryBudgetBtn.addEventListener('click', saveCategoryBudget);
         
-        // NEW: No Budget State Buttons
+        // No Budget State Buttons
         setBudgetFromMessage.addEventListener('click', () => budgetModal.classList.add('active'));
         setBudgetFromMessageTab.addEventListener('click', () => budgetModal.classList.add('active'));
         
-        // NEW: Tour Navigation
+        // Tour Navigation
         nextTourStepBtn.addEventListener('click', nextTourStep);
         skipTourBtn.addEventListener('click', finishTour);
         
-        // NEW: Layout Selection - MODIFIED: Auto-select scroll layout and proceed
+        // Layout Selection
         scrollLayoutOption.addEventListener('click', () => {
             scrollLayoutOption.classList.add('selected');
             tabLayoutOption.classList.remove('selected');
@@ -4470,9 +5321,7 @@
             selectedLayout = 'tab';
         });
         
-        // MODIFIED: Auto-select scroll layout and proceed immediately
         confirmLayoutSelection.addEventListener('click', () => {
-            // If no layout selected, default to scroll
             if (!selectedLayout) {
                 selectedLayout = 'scroll';
             }
@@ -4481,26 +5330,21 @@
             layoutSelectionModal.classList.remove('active');
             showNotification(`${selectedLayout === 'tab' ? 'Tab' : 'Scroll'} layout activated!`);
             
-            // NEW: Set flag to skip the tour
             localStorage.setItem('hasSeenTour', 'true');
         });
         
-        // MODIFIED: Auto-select scroll layout when modal opens
+        // Auto-select scroll layout when modal opens
         document.addEventListener('DOMContentLoaded', function() {
-            // Auto-select scroll layout when layout modal opens
             const layoutModal = document.getElementById('layoutSelectionModal');
             if (layoutModal) {
-                // Use MutationObserver to detect when modal becomes active
                 const observer = new MutationObserver(function(mutations) {
                     mutations.forEach(function(mutation) {
                         if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
                             if (layoutModal.classList.contains('active')) {
-                                // Auto-select scroll layout
                                 scrollLayoutOption.classList.add('selected');
                                 tabLayoutOption.classList.remove('selected');
                                 selectedLayout = 'scroll';
                                 
-                                // Auto-confirm after a short delay (simulating one-click)
                                 setTimeout(() => {
                                     applyLayout(selectedLayout);
                                     layoutSelectionModal.classList.remove('active');
@@ -4518,6 +5362,10 @@
         
         // Tab Navigation Setup
         setupTabNavigation();
+        
+        // AI Insights Toggle
+        aiToggleBtn.addEventListener('click', toggleAIInsights);
+        aiToggleBtnTab.addEventListener('click', toggleAIInsights);
         
         // ==================== EXISTING EVENT LISTENERS ====================
         transactionForm.addEventListener('submit', addTransaction);
@@ -4919,7 +5767,6 @@
             renderDebtListTab();
             debtModal.classList.remove('active');
             
-            // Reset form
             document.getElementById('debtAmount').value = '';
             document.getElementById('debtPerson').value = '';
             document.getElementById('debtDescription').value = '';
@@ -4940,11 +5787,9 @@
                 return;
             }
             
-            // Find the debt
             let debt = null;
             let debtType = null;
             
-            // Check owedToMe
             for (let i = 0; i < debts.owedToMe.length; i++) {
                 if (debts.owedToMe[i].id === debtId) {
                     debt = debts.owedToMe[i];
@@ -4953,7 +5798,6 @@
                 }
             }
             
-            // If not found, check owedToOthers
             if (!debt) {
                 for (let i = 0; i < debts.owedToOthers.length; i++) {
                     if (debts.owedToOthers[i].id === debtId) {
@@ -4969,17 +5813,14 @@
                 return;
             }
             
-            // Add payment
             debt.payments.push({
                 amount: paymentAmount,
                 date: paymentDate,
                 notes: paymentNotes
             });
             
-            // Update debt amount
             debt.amount -= paymentAmount;
             
-            // If debt is fully paid, round to zero to avoid negative values
             if (debt.amount < 0) {
                 debt.amount = 0;
             }
@@ -4990,7 +5831,6 @@
             renderDebtListTab();
             paymentModal.classList.remove('active');
             
-            // Reset form
             document.getElementById('paymentAmount').value = '';
             document.getElementById('paymentNotes').value = '';
             document.getElementById('paymentDate').value = new Date().toISOString().split('T')[0];
@@ -5000,23 +5840,19 @@
         
         // Update debt display
         function updateDebtDisplay() {
-            // Calculate totals for owedToMe (only unpaid debts)
             const owedToMeTotal = debts.owedToMe.reduce((sum, debt) => {
                 return sum + debt.amount;
             }, 0);
             
-            // Calculate totals for owedToOthers (only unpaid debts)
             const owedToOthersTotal = debts.owedToOthers.reduce((sum, debt) => {
                 return sum + debt.amount;
             }, 0);
             
-            // Update UI
             owedToMeEl.textContent = formatNumberWithCommas(owedToMeTotal);
             owedToOthersEl.textContent = formatNumberWithCommas(owedToOthersTotal);
             owedToMeTabEl.textContent = formatNumberWithCommas(owedToMeTotal);
             owedToOthersTabEl.textContent = formatNumberWithCommas(owedToOthersTotal);
             
-            // Count only active debts
             const activeOwedToMe = debts.owedToMe.filter(d => d.amount > 0).length;
             const activeOwedToOthers = debts.owedToOthers.filter(d => d.amount > 0).length;
             
@@ -5028,7 +5864,6 @@
         
         // Render debt list
         function renderDebtList() {
-            // Get all active debts (owedToMe and owedToOthers with amount > 0)
             const activeDebts = [
                 ...debts.owedToMe.filter(d => d.amount > 0),
                 ...debts.owedToOthers.filter(d => d.amount > 0)
@@ -5051,7 +5886,6 @@
                 const debtItem = document.createElement('div');
                 debtItem.className = 'debt-item';
                 
-                // Calculate progress
                 const paidAmount = debt.originalAmount - debt.amount;
                 const progress = (paidAmount / debt.originalAmount) * 100;
                 
@@ -5077,7 +5911,6 @@
                 debtListEl.appendChild(debtItem);
             });
             
-            // Add event listeners to the new buttons
             document.querySelectorAll('.pay-btn').forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     const debtId = parseInt(e.currentTarget.dataset.id);
@@ -5095,7 +5928,6 @@
         
         // Render debt list for tab layout
         function renderDebtListTab() {
-            // Get all active debts (owedToMe and owedToOthers with amount > 0)
             const activeDebts = [
                 ...debts.owedToMe.filter(d => d.amount > 0),
                 ...debts.owedToOthers.filter(d => d.amount > 0)
@@ -5118,7 +5950,6 @@
                 const debtItem = document.createElement('div');
                 debtItem.className = 'debt-item';
                 
-                // Calculate progress
                 const paidAmount = debt.originalAmount - debt.amount;
                 const progress = (paidAmount / debt.originalAmount) * 100;
                 
@@ -5144,7 +5975,6 @@
                 debtListTabEl.appendChild(debtItem);
             });
             
-            // Add event listeners to the new buttons
             document.querySelectorAll('.pay-btn').forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     const debtId = parseInt(e.currentTarget.dataset.id);
@@ -5168,10 +5998,8 @@
         
         // Show payment history
         function showPaymentHistory(debtId) {
-            // Find the debt
             let debt = null;
             
-            // Check owedToMe
             for (let i = 0; i < debts.owedToMe.length; i++) {
                 if (debts.owedToMe[i].id === debtId) {
                     debt = debts.owedToMe[i];
@@ -5179,7 +6007,6 @@
                 }
             }
             
-            // If not found, check owedToOthers
             if (!debt) {
                 for (let i = 0; i < debts.owedToOthers.length; i++) {
                     if (debts.owedToOthers[i].id === debtId) {
@@ -5254,7 +6081,6 @@
                 const transactionItem = document.createElement('div');
                 transactionItem.className = 'transaction-item';
                 
-                // Determine icon and color based on category
                 let iconClass, iconBg, iconName;
                 
                 switch(transaction.category) {
@@ -5324,7 +6150,6 @@
                         iconName = 'fas fa-gas-pump';
                         break;
                     default:
-                        // Check if it's a custom category
                         const customCategory = customCategories.find(cat => cat.value === transaction.category);
                         if (customCategory) {
                             iconClass = 'category-other';
@@ -5337,7 +6162,6 @@
                         }
                 }
                 
-                // For custom categories, set the background color
                 const customCategory = customCategories.find(cat => cat.value === transaction.category);
                 const customStyle = customCategory ? `style="background-color: ${customCategory.color}"` : '';
                 
@@ -5395,7 +6219,6 @@
                 const transactionItem = document.createElement('div');
                 transactionItem.className = 'transaction-item';
                 
-                // Determine icon and color based on category
                 let iconClass, iconBg, iconName;
                 
                 switch(transaction.category) {
@@ -5465,7 +6288,6 @@
                         iconName = 'fas fa-gas-pump';
                         break;
                     default:
-                        // Check if it's a custom category
                         const customCategory = customCategories.find(cat => cat.value === transaction.category);
                         if (customCategory) {
                             iconClass = 'category-other';
@@ -5478,7 +6300,6 @@
                         }
                 }
                 
-                // For custom categories, set the background color
                 const customCategory = customCategories.find(cat => cat.value === transaction.category);
                 const customStyle = customCategory ? `style="background-color: ${customCategory.color}"` : '';
                 
@@ -5559,16 +6380,14 @@
             }
         }
         
-        // NEW: Update category budget display
+        // Update category budget display
         function updateCategoryBudgetDisplay() {
-            // Check if any category has a budget set
             const hasCategoryBudgets = Object.keys(categoryBudgets).length > 0;
             
             if (hasCategoryBudgets) {
                 categoryBudgetSection.style.display = 'block';
                 categoryBudgetSectionTab.style.display = 'block';
                 
-                // Calculate spending by category for current month
                 const now = new Date();
                 const currentMonth = now.getMonth();
                 const currentYear = now.getFullYear();
@@ -5585,14 +6404,12 @@
                         categorySpending[t.category] = (categorySpending[t.category] || 0) + t.amount;
                     });
                 
-                // Generate HTML for category budgets
                 let html = '';
                 
                 for (const [category, budgetAmount] of Object.entries(categoryBudgets)) {
                     const spent = categorySpending[category] || 0;
                     const percentage = Math.min((spent / budgetAmount) * 100, 100);
                     
-                    // Determine color based on percentage
                     let color = 'var(--success)';
                     if (percentage > 90) color = 'var(--danger)';
                     else if (percentage > 75) color = 'var(--warning)';
@@ -5619,7 +6436,7 @@
             }
         }
         
-        // NEW: Update smart budget adjustment message
+        // Update smart budget adjustment message
         function updateSmartBudgetMessage() {
             if (budget.total === 0) {
                 budgetAdjustmentMessage.style.display = 'none';
@@ -5661,7 +6478,7 @@
                         })
                         .reduce((sum, t) => sum + t.amount, 0);
                     
-                    daysPassed = now.getDay() + 1; // 1-7
+                    daysPassed = now.getDay() + 1;
                     totalDays = 7;
                     break;
                 case 'monthly':
@@ -5707,13 +6524,10 @@
             let message = '';
             
             if (difference > 0) {
-                // Over budget
                 message = `You're ₦${formatNumberWithCommas(difference)} above your expected spending. Try to spend ₦${formatNumberWithCommas(recommendedDaily)} per day for the rest of the ${budget.period} to stay on track.`;
             } else if (difference < 0) {
-                // Under budget
                 message = `Great job! You're ₦${formatNumberWithCommas(Math.abs(difference))} below your expected spending. You can spend ₦${formatNumberWithCommas(recommendedDaily)} per day for the rest of the ${budget.period}.`;
             } else {
-                // On track
                 message = `You're right on track with your budget! Keep spending ₦${formatNumberWithCommas(recommendedDaily)} per day to stay within your ${budget.period}ly budget.`;
             }
             
@@ -5805,18 +6619,18 @@
             
             // Update income vs expense chart
             const monthlyData = {
-                0: { income: 0, expense: 0 }, // Jan
-                1: { income: 0, expense: 0 }, // Feb
-                2: { income: 0, expense: 0 }, // Mar
-                3: { income: 0, expense: 0 }, // Apr
-                4: { income: 0, expense: 0 }, // May
-                5: { income: 0, expense: 0 }, // Jun
-                6: { income: 0, expense: 0 }, // Jul
-                7: { income: 0, expense: 0 }, // Aug
-                8: { income: 0, expense: 0 }, // Sep
-                9: { income: 0, expense: 0 }, // Oct
-                10: { income: 0, expense: 0 }, // Nov
-                11: { income: 0, expense: 0 }  // Dec
+                0: { income: 0, expense: 0 },
+                1: { income: 0, expense: 0 },
+                2: { income: 0, expense: 0 },
+                3: { income: 0, expense: 0 },
+                4: { income: 0, expense: 0 },
+                5: { income: 0, expense: 0 },
+                6: { income: 0, expense: 0 },
+                7: { income: 0, expense: 0 },
+                8: { income: 0, expense: 0 },
+                9: { income: 0, expense: 0 },
+                10: { income: 0, expense: 0 },
+                11: { income: 0, expense: 0 }
             };
             
             transactions.forEach(t => {
@@ -5828,7 +6642,6 @@
                 }
             });
             
-            // Update chart data
             incomeChart.data.datasets[0].data = Object.values(monthlyData).map(m => m.income);
             incomeChart.data.datasets[1].data = Object.values(monthlyData).map(m => m.expense);
             incomeChart.update();
@@ -5997,209 +6810,6 @@
             }, 3000);
         }
         
-        // NEW: AI Insights function
-        function updateAIInsights() {
-            const aiRecommendations = document.getElementById('aiRecommendations');
-            const aiRecommendationsTab = document.getElementById('aiRecommendationsTab');
-            
-            if (transactions.length === 0) {
-                aiRecommendations.innerHTML = `
-                    <div class="ai-recommendation">
-                        <strong>Welcome!</strong> Start by adding your first transaction to get personalized insights.
-                    </div>
-                `;
-                aiRecommendationsTab.innerHTML = `
-                    <div class="ai-recommendation">
-                        <strong>Welcome!</strong> Start by adding your first transaction to get personalized insights.
-                    </div>
-                `;
-                return;
-            }
-            
-            // Get current date and calculate date ranges
-            const now = new Date();
-            const oneWeekAgo = new Date(now);
-            oneWeekAgo.setDate(now.getDate() - 7);
-            
-            const oneMonthAgo = new Date(now);
-            oneMonthAgo.setMonth(now.getMonth() - 1);
-            
-            // Filter transactions for different time periods
-            const thisWeekExpenses = transactions.filter(t => 
-                t.type === 'expense' && new Date(t.date) >= oneWeekAgo
-            );
-            
-            const thisMonthExpenses = transactions.filter(t => 
-                t.type === 'expense' && new Date(t.date) >= oneMonthAgo
-            );
-            
-            const thisMonthIncome = transactions.filter(t => 
-                t.type === 'income' && new Date(t.date) >= oneMonthAgo
-            );
-            
-            // Calculate totals
-            const totalThisWeek = thisWeekExpenses.reduce((sum, t) => sum + t.amount, 0);
-            const totalThisMonth = thisMonthExpenses.reduce((sum, t) => sum + t.amount, 0);
-            const totalIncomeThisMonth = thisMonthIncome.reduce((sum, t) => sum + t.amount, 0);
-            
-            // Calculate spending by category this month
-            const categorySpending = {};
-            thisMonthExpenses.forEach(t => {
-                categorySpending[t.category] = (categorySpending[t.category] || 0) + t.amount;
-            });
-            
-            // Find highest spending category
-            let highestCategory = '';
-            let highestAmount = 0;
-            for (const category in categorySpending) {
-                if (categorySpending[category] > highestAmount) {
-                    highestAmount = categorySpending[category];
-                    highestCategory = category;
-                }
-            }
-            
-            // Calculate savings rate
-            const savingsRate = totalIncomeThisMonth > 0 ? 
-                ((totalIncomeThisMonth - totalThisMonth) / totalIncomeThisMonth * 100).toFixed(1) : 0;
-            
-            // Generate insights
-            const insights = [];
-            
-            // Weekly spending insight
-            if (totalThisWeek > 0) {
-                insights.push({
-                    type: 'info',
-                    message: `You've spent ₦${formatNumberWithCommas(totalThisWeek)} this week.`
-                });
-            }
-            
-            // Highest spending category insight
-            if (highestCategory && highestAmount > 0) {
-                insights.push({
-                    type: 'warning',
-                    message: `Your highest spending is on ${formatCategory(highestCategory)} (₦${formatNumberWithCommas(highestAmount)} this month).`
-                });
-            }
-            
-            // Budget insight
-            if (budget.total > 0) {
-                const used = thisMonthExpenses.reduce((sum, t) => sum + t.amount, 0);
-                const percentage = (used / budget.total * 100).toFixed(1);
-                
-                if (percentage > 90) {
-                    insights.push({
-                        type: 'danger',
-                        message: `You've used ${percentage}% of your monthly budget. Consider reducing non-essential spending.`
-                    });
-                } else if (percentage > 75) {
-                    insights.push({
-                        type: 'warning',
-                        message: `You've used ${percentage}% of your monthly budget. You're on track but watch your spending.`
-                    });
-                } else if (percentage < 50) {
-                    insights.push({
-                        type: 'success',
-                        message: `Great! You've only used ${percentage}% of your monthly budget.`
-                    });
-                }
-            }
-            
-            // Category budget insights
-            for (const category in categoryBudgets) {
-                if (categoryBudgets[category] > 0) {
-                    const spent = categorySpending[category] || 0;
-                    const percentage = (spent / categoryBudgets[category] * 100).toFixed(1);
-                    
-                    if (percentage > 90) {
-                        insights.push({
-                            type: 'warning',
-                            message: `You've used ${percentage}% of your ${formatCategory(category)} budget.`
-                        });
-                    } else if (percentage > 75) {
-                        insights.push({
-                            type: 'info',
-                            message: `You've used ${percentage}% of your ${formatCategory(category)} budget.`
-                        });
-                    }
-                }
-            }
-            
-            // Savings rate insight
-            if (savingsRate > 0) {
-                if (savingsRate >= 20) {
-                    insights.push({
-                        type: 'success',
-                        message: `Excellent! Your savings rate is ${savingsRate}% this month.`
-                    });
-                } else if (savingsRate >= 10) {
-                    insights.push({
-                        type: 'info',
-                        message: `Good job! Your savings rate is ${savingsRate}% this month.`
-                    });
-                } else if (savingsRate < 0) {
-                    insights.push({
-                        type: 'danger',
-                        message: `You're spending more than you earn. Consider reviewing your expenses.`
-                    });
-                }
-            }
-            
-            // Daily average spending insight
-            if (totalThisMonth > 0) {
-                const daysInMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
-                const daysPassed = Math.min(now.getDate(), daysInMonth);
-                const dailyAverage = totalThisMonth / daysPassed;
-                
-                insights.push({
-                    type: 'info',
-                    message: `Your daily spending average is ₦${formatNumberWithCommas(dailyAverage)} this month.`
-                });
-            }
-            
-            // Nigerian-specific insights
-            const nigerianInsights = [
-                "Consider buying foodstuff in bulk to save money on groceries.",
-                "Using public transport instead of ride-hailing can save up to 60% on transport costs.",
-                "Monitor your airtime and data spending - consider switching to more cost-effective plans.",
-                "Setting aside 10% of your income for 'ajo' or savings can help build financial security.",
-                "Review your POS charges - frequent small withdrawals can add up significantly."
-            ];
-            
-            // Add a random Nigerian insight if we have few insights
-            if (insights.length < 3) {
-                const randomInsight = nigerianInsights[Math.floor(Math.random() * nigerianInsights.length)];
-                insights.push({
-                    type: 'info',
-                    message: randomInsight
-                });
-            }
-            
-            // If no insights generated, show default tips
-            if (insights.length === 0) {
-                insights.push({
-                    type: 'info',
-                    message: "Track your daily expenses to identify spending patterns and save more."
-                });
-                insights.push({
-                    type: 'info',
-                    message: "Set a monthly budget to help control your spending and achieve your financial goals."
-                });
-            }
-            
-            // Update the AI insights section
-            aiRecommendations.innerHTML = insights.slice(0, 3).map(insight => `
-                <div class="ai-recommendation" style="border-left: 4px solid ${
-                    insight.type === 'success' ? 'var(--success)' : 
-                    insight.type === 'warning' ? 'var(--warning)' : 
-                    insight.type === 'danger' ? 'var(--danger)' : 'var(--primary)'
-                };">
-                    <strong>${insight.type.charAt(0).toUpperCase() + insight.type.slice(1)}:</strong> ${insight.message}
-                </div>
-            `).join('');
-            
-            aiRecommendationsTab.innerHTML = aiRecommendations.innerHTML;
-        }
-        
         // Helper functions
         function formatDate(dateString) {
             const date = new Date(dateString);
@@ -6207,17 +6817,13 @@
         }
         
         function formatCategory(category) {
-            // Check if it's a custom category
             const customCategory = customCategories.find(cat => cat.value === category);
             if (customCategory) {
                 return customCategory.name;
             }
             
-            // Check if it's a Nigerian category
             const nigerianCategories = {
                 'data': 'Data',
-                'transport': 'Transport',
-                'food': 'Food',
                 'nepa': 'NEPA Bill',
                 'pos': 'POS/Bank Charges',
                 'family': 'Family Support',
@@ -6228,7 +6834,6 @@
                 return nigerianCategories[category];
             }
             
-            // Default categories
             return category.charAt(0).toUpperCase() + category.slice(1);
         }
     </script>
